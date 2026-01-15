@@ -12,33 +12,95 @@ class PDFAttributeExtractor:
     """Extract material attributes from PDF documents with explainability"""
     
     def __init__(self):
-        # Regex patterns for different attributes
+        """
+        Initialize extractor with comprehensive patterns for SAP MDG integration.
+        These characteristics map to standard SAP Material Master fields.
+        """
         self.patterns = {
+            # Technical Specifications
+            'max_flow': [
+                r'Max\.?\s*flow[:\s]+(\d+)\s*(m³?/h|m3/h|GPM|l/h|liters?/hour)',
+                r'Maximum\s+flow[:\s]+(\d+)\s*(m³?/h|m3/h|GPM|l/h)',
+                r'Flow\s+rate[:\s]+(\d+)\s*(m³?/h|m3/h|GPM|l/h)',
+            ],
+            'max_pressure': [
+                r'Max\.?\s*(?:operating\s+)?pressure[:\s]+(\d+\.?\d*)\s*(bar|PSI|psi|kPa|MPa)',
+                r'Maximum\s+pressure[:\s]+(\d+\.?\d*)\s*(bar|PSI|psi|kPa|MPa)',
+                r'Operating\s+pressure[:\s]+(\d+\.?\d*)\s*(bar|PSI|psi|kPa|MPa)',
+            ],
+            'temperature_range': [
+                r'(?:Max\.?\s*)?(?:working|operating)\s+temperature[:\s]+(-?\d+)\s*(?:º|°)?C?\s+to\s+[+]?(\d+)\s*(?:º|°)?C',
+                r'Temperature\s+range[:\s]+(-?\d+)\s*(?:º|°)?C?\s+to\s+[+]?(\d+)\s*(?:º|°)?C',
+                r'Working\s+temp[:\s]+(-?\d+)\s*(?:º|°)?C?\s+to\s+[+]?(\d+)\s*(?:º|°)?C',
+            ],
+            'max_speed': [
+                r'Max\.?\s*speed[:\s]+(\d+)\s*(rpm|RPM)',
+                r'Maximum\s+speed[:\s]+(\d+)\s*(rpm|RPM)',
+                r'Rotation\s+speed[:\s]+(\d+)\s*(rpm|RPM)',
+            ],
+            
+            # Vendor/Manufacturer Information (for SAP Vendor Master)
+            'manufacturer': [
+                r'(INOXPA|GRUNDFOS|KSB|WILO|Pentair|Xylem|Sulzer|Flowserve|ITT|Ebara)\s+S\.?A\.?U?\.?',
+                r'Manufacturer[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|FT)',
+                r'Made\s+by[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|$)',
+                r'Company[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|$)',
+            ],
+            
+            # Material Identification (for SAP Material Master)
+            'model': [
+                r'(DIN-FOOD|[A-Z]{2,}-[A-Z0-9\-]+)',
+                r'Model[:\s]+([A-Z0-9\-]+)',
+                r'Type[:\s]+([A-Z0-9\-]+)',
+                r'Series[:\s]+([A-Z0-9\-]+)',
+            ],
+            'material': [
+                r'Materials?\s+(?:in\s+contact[:\s]+)?([0-9\.]+\s*\([A-Z]+\s+[0-9A-Z]+\))',
+                r'Construction[:\s]+([0-9\.]+\s*\([A-Z]+\s+[0-9A-Z]+\))',
+                r'Body\s+material[:\s]+([A-Z]+\s+[0-9A-Z]+)',
+                r'(1\.4404|AISI\s+316L?|Stainless\s+steel)',
+            ],
+            
+            # Physical Characteristics (for SAP Material Master - Basic Data)
             'weight': [
-                r'weight[:\s]+(\d+\.?\d*)\s*(kg|g|lbs?|pounds?)',
-                r'mass[:\s]+(\d+\.?\d*)\s*(kg|g|lbs?|pounds?)',
-                r'(\d+\.?\d*)\s*(kg|g|lbs?|pounds?)\s+weight',
+                r'Weight[:\s]+(\d+\.?\d*)\s*(kg|g|lbs?|pounds?)',
+                r'Mass[:\s]+(\d+\.?\d*)\s*(kg|g|lbs?|pounds?)',
+                r'Net\s+weight[:\s]+(\d+\.?\d*)\s*(kg|g|lbs?|pounds?)',
             ],
             'dimensions': [
-                r'dimensions?[:\s]+(\d+\.?\d*)\s*(?:cm|mm|m|inch|in|")\s*[xX×]\s*(\d+\.?\d*)\s*(?:cm|mm|m|inch|in|")\s*[xX×]\s*(\d+\.?\d*)\s*(?:cm|mm|m|inch|in|")',
-                r'size[:\s]+(\d+\.?\d*)\s*[xX×]\s*(\d+\.?\d*)\s*[xX×]\s*(\d+\.?\d*)\s*(?:cm|mm|m|inch|in)',
-                r'(\d+\.?\d*)\s*(?:cm|mm|m|inch|in)\s*[xX×]\s*(\d+\.?\d*)\s*(?:cm|mm|m|inch|in)\s*[xX×]\s*(\d+\.?\d*)\s*(?:cm|mm|m|inch|in)',
+                r'Dimensions?[:\s]+(\d+\.?\d*)\s*(?:cm|mm|m|x)\s*[xX×]\s*(\d+\.?\d*)\s*(?:cm|mm|m|x)\s*[xX×]\s*(\d+\.?\d*)\s*(?:cm|mm|m)',
+                r'Size[:\s]+(\d+\.?\d*)\s*[xX×]\s*(\d+\.?\d*)\s*[xX×]\s*(\d+\.?\d*)',
             ],
-            'manufacturer': [
-                r'manufacturer[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|$|[,\.])',
-                r'made by[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|$|[,\.])',
-                r'produced by[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|$|[,\.])',
+            
+            # Procurement/Purchasing Data (for SAP Material Master - Purchasing)
+            'lead_time': [
+                r'Lead\s+time[:\s]+(\d+)\s*(days?|weeks?|months?)',
+                r'Delivery\s+time[:\s]+(\d+)\s*(days?|weeks?)',
             ],
-            'material_id': [
-                r'material\s+id[:\s]+(MAT\d+)',
-                r'product\s+id[:\s]+(MAT\d+)',
-                r'item\s+id[:\s]+(MAT\d+)',
+            
+            # Classification Data (for SAP)
+            'product_type': [
+                r'Product\s+type[:\s]+([A-Za-z\s]+)',
+                r'Category[:\s]+([A-Za-z\s]+)',
+                r'Type[:\s]+(Pump|Valve|Motor|Sensor|Controller)',
             ],
-            'mpn': [
-                r'part\s+number[:\s]+([A-Z]{3}\d{3})',
-                r'MPN[:\s]+([A-Z]{3}\d{3})',
-                r'model[:\s]+([A-Z]{3}\d{3})',
-            ]
+            
+            # Quality/Compliance (for SAP QM)
+            'certification': [
+                r'(CE|ISO\s+\d+|FDA|ATEX|EHEDG)',
+                r'Certified[:\s]+([A-Z\s,]+)',
+                r'Standards?[:\s]+([A-Z0-9\s,\-]+)',
+            ],
+            
+            # Additional Technical Data
+            'power': [
+                r'Power[:\s]+(\d+\.?\d*)\s*(kW|W|HP)',
+                r'Motor\s+power[:\s]+(\d+\.?\d*)\s*(kW|W|HP)',
+            ],
+            'voltage': [
+                r'Voltage[:\s]+(\d+)\s*(V|VAC|VDC)',
+                r'Supply[:\s]+(\d+)\s*(V|VAC)',
+            ],
         }
     
     def extract_text_from_pdf(self, pdf_path: str) -> List[Dict]:
@@ -62,43 +124,54 @@ class PDFAttributeExtractor:
     def find_attribute_in_text(self, text: str, attribute_name: str, patterns: List[str]) -> Optional[Dict]:
         """Find an attribute in text using regex patterns"""
         for pattern in patterns:
-            match = re.search(pattern, text, re.IGNORECASE)
+            match = re.search(pattern, text, re.IGNORECASE | re.MULTILINE)
             if match:
                 # Extract the matched text and its context
-                start_pos = max(0, match.start() - 50)
-                end_pos = min(len(text), match.end() + 50)
+                start_pos = max(0, match.start() - 80)
+                end_pos = min(len(text), match.end() + 80)
                 context = text[start_pos:end_pos].strip()
                 
-                # Format the extracted value
-                if attribute_name == 'weight':
-                    value = f"{match.group(1)} {match.group(2)}"
-                elif attribute_name == 'dimensions':
-                    value = f"{match.group(1)} x {match.group(2)} x {match.group(3)}"
-                else:
-                    value = match.group(1).strip()
+                # Format the extracted value based on attribute type
+                try:
+                    if attribute_name == 'temperature_range':
+                        value = f"{match.group(1)}°C to {match.group(2)}°C"
+                    elif attribute_name in ['max_flow', 'max_pressure', 'max_speed']:
+                        value = f"{match.group(1)} {match.group(2)}"
+                    elif attribute_name == 'material':
+                        value = match.group(1).strip()
+                    elif attribute_name == 'manufacturer':
+                        value = match.group(1).strip()
+                    elif attribute_name == 'model':
+                        value = match.group(1).strip()
+                    else:
+                        value = match.group(1).strip() if match.lastindex >= 1 else match.group(0).strip()
+                except IndexError:
+                    value = match.group(0).strip()
                 
                 return {
                     'value': value,
                     'matched_text': match.group(0),
                     'context': context,
                     'pattern_used': pattern,
-                    'confidence': self._calculate_confidence(match, pattern)
+                    'confidence': self._calculate_confidence(match, pattern, attribute_name)
                 }
         
         return None
     
-    def _calculate_confidence(self, match, pattern: str) -> float:
+    def _calculate_confidence(self, match, pattern: str, attribute_name: str = '') -> float:
         """Calculate confidence score based on match quality"""
         # Base confidence
-        confidence = 0.7
+        confidence = 0.75
         
-        # Increase confidence if match is exact
-        if ':' in match.group(0):
+        # Increase confidence if match has clear labeling (colon or 'Max')
+        matched_text = match.group(0)
+        if ':' in matched_text or 'Max' in matched_text:
             confidence += 0.15
         
-        # Increase confidence if pattern is more specific
-        if 'manufacturer' in pattern.lower() or 'weight' in pattern.lower():
-            confidence += 0.1
+        # Increase confidence for specific attributes
+        high_confidence_attrs = ['manufacturer', 'max_flow', 'max_pressure', 'temperature_range', 'max_speed']
+        if attribute_name in high_confidence_attrs:
+            confidence += 0.10
         
         # Cap at 0.95
         return min(confidence, 0.95)

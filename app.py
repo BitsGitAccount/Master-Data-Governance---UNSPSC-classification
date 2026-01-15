@@ -31,635 +31,423 @@ import os               # File system operations
 from models.classifier import MaterialClassifier  # Our ML classification model
 from models.pdf_extractor import PDFAttributeExtractor  # PDF attribute extraction
 import tempfile  # For handling temporary uploaded files
+import base64  # For encoding PDF to display in iframe
 
 
 # ============================================================================
 # STREAMLIT PAGE CONFIGURATION
 # ============================================================================
-# This must be the first Streamlit command - configures the page layout/appearance
 st.set_page_config(
-    page_title="Material UNSPSC Classification",  # Browser tab title
-    page_icon="📦",  # Browser tab icon
-    layout="wide"  # Use full width of browser (vs centered)
+    page_title="Material UNSPSC Classification",
+    page_icon="📦",
+    layout="wide"
 )
+
+
+# ============================================================================
+# CUSTOM CSS STYLING
+# ============================================================================
+def inject_custom_css():
+    """Load custom CSS for SAP Horizon theme from external file"""
+    css_file = os.path.join(os.path.dirname(__file__), 'static', 'styles.css')
+    
+    if os.path.exists(css_file):
+        with open(css_file, 'r') as f:
+            css_content = f.read()
+        st.markdown(f'<style>{css_content}</style>', unsafe_allow_html=True)
+    else:
+        st.warning("CSS file not found. Using default styling.")
+
+
+# ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
+
+def get_confidence_badge(confidence):
+    """Generate HTML for confidence badge with color coding"""
+    confidence_pct = confidence * 100
+    
+    if confidence >= 0.8:
+        badge_class = "confidence-high"
+    elif confidence >= 0.6:
+        badge_class = "confidence-medium"
+    else:
+        badge_class = "confidence-low"
+    
+    return f'<span class="confidence-badge {badge_class}">{confidence_pct:.0f}%</span>'
+
+
+def display_pdf(pdf_path):
+    """Display PDF in an iframe using base64 encoding"""
+    try:
+        with open(pdf_path, "rb") as f:
+            base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+        
+        pdf_display = f'''
+        <iframe src="data:application/pdf;base64,{base64_pdf}" 
+                width="100%" height="800px" type="application/pdf"
+                style="border: 2px solid #e2e8f0; border-radius: 8px;">
+        </iframe>
+        '''
+        st.markdown(pdf_display, unsafe_allow_html=True)
+    except Exception as e:
+        st.error(f"Error displaying PDF: {str(e)}")
 
 
 # ============================================================================
 # MODEL LOADING FUNCTIONS
 # ============================================================================
-# @st.cache_resource decorator ensures these models are loaded only ONCE
-# and cached in memory for subsequent users/requests (improves performance)
 
 @st.cache_resource
 def load_classifier():
-    """
-    Load the trained ML classification model from disk.
-    
-    Returns:
-        MaterialClassifier object if model exists, None otherwise
-        
-    NOTE: The model must be trained first using: python train_model.py
-    This creates the .pkl files in the trained_models/ directory
-    """
-    # Initialize classifier object
+    """Load the trained ML classification model from disk"""
     classifier = MaterialClassifier()
     
-    # Check if trained model file exists
     if os.path.exists('trained_models/classifier.pkl'):
-        # Load the pre-trained model weights
         classifier.load_model('trained_models')
         return classifier
     
-    # Return None if model hasn't been trained yet
     return None
 
 
 @st.cache_resource
 def load_pdf_extractor():
-    """
-    Initialize the PDF attribute extractor.
-    
-    Returns:
-        PDFAttributeExtractor object
-        
-    NOTE: This doesn't require training - it uses regex patterns
-    to extract attributes like weight, dimensions, manufacturer, etc.
-    """
+    """Initialize the PDF attribute extractor"""
+    # Force reload to get latest version
+    import importlib
+    import sys
+    if 'models.pdf_extractor' in sys.modules:
+        importlib.reload(sys.modules['models.pdf_extractor'])
+        from models.pdf_extractor import PDFAttributeExtractor as PDFExtractorReloaded
+        return PDFExtractorReloaded()
     return PDFAttributeExtractor()
-
-
-def render_classification_tab():
-    """Render the material classification tab"""
-    st.header("📋 Material Classification")
-    st.markdown("Classify materials into UNSPSC codes based on their descriptions.")
-    
-    # Load classifier
-    classifier = load_classifier()
-    
-    if classifier is None:
-        st.error("❌ Model not found. Please train the model first by running: `python train_model.py`")
-        return
-    
-    st.success("✓ Model loaded successfully")
-    
-    # Input section
-    st.subheader("Input Material Description")
-    
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        material_description = st.text_area(
-            "Enter material description:",
-            height=100,
-            placeholder="e.g., High-Quality Plastic Packaging for Industrial Use"
-        )
-    
-    with col2:
-        st.info("""
-        **Tips:**
-        - Include material type
-        - Mention key features
-        - Specify intended use
-        """)
-    
-    # Classify button
-    if st.button("🔍 Classify Material", type="primary"):
-        if not material_description.strip():
-            st.warning("Please enter a material description")
-            return
-        
-        with st.spinner("Classifying material..."):
-            # Get prediction with confidence
-            results = classifier.predict_with_confidence([material_description])
-            result = results[0]
-            
-            # Get explanation
-            explanation = classifier.explain_prediction(material_description, result)
-        
-        # Display results
-        st.markdown("---")
-        st.subheader("📊 Classification Results")
-        
-        # Main result
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.metric("Predicted UNSPSC Code", result['predicted_unspsc'])
-        
-        with col2:
-            confidence = result['confidence']
-            st.metric("Confidence Score", f"{confidence:.1%}")
-            
-            if confidence >= 0.8:
-                st.success("High confidence")
-            elif confidence >= 0.6:
-                st.warning("Medium confidence - review recommended")
-            else:
-                st.error("Low confidence - manual review required")
-        
-        # Top predictions
-        st.subheader("🎯 Top 3 Predictions")
-        
-        pred_data = []
-        for pred in result['top_predictions']:
-            pred_data.append({
-                'UNSPSC Code': pred['unspsc_code'],
-                'Probability': f"{pred['probability']:.1%}"
-            })
-        
-        st.dataframe(pd.DataFrame(pred_data), use_container_width=True, hide_index=True)
-        
-        # Explainability
-        st.subheader("💡 Explainability")
-        
-        st.info(explanation['explanation'])
-        
-        if explanation['influential_words']:
-            st.markdown("**Most Influential Keywords:**")
-            
-            words_data = []
-            for word_info in explanation['influential_words'][:5]:
-                words_data.append({
-                    'Keyword': word_info['word'],
-                    'Importance Score': f"{word_info['importance']:.4f}",
-                    'Weight': f"{word_info['weight']:.4f}"
-                })
-            
-            st.dataframe(pd.DataFrame(words_data), use_container_width=True, hide_index=True)
-
-
-def render_pdf_extraction_tab():
-    """Render the PDF attribute extraction tab"""
-    st.header("📄 PDF Attribute Extraction")
-    st.markdown("Extract material attributes from Technical Data Sheet (TDS) PDFs for testing purposes.")
-    
-    # Load extractor
-    extractor = load_pdf_extractor()
-    
-    st.success("✓ PDF Extractor loaded successfully")
-    
-    # File upload
-    st.subheader("Upload TDS PDF")
-    
-    uploaded_file = st.file_uploader(
-        "Choose a PDF file",
-        type=['pdf'],
-        help="Upload a Technical Data Sheet in PDF format"
-    )
-    
-    # Sample files
-    st.markdown("**Or select a sample TDS file:**")
-    sample_files = []
-    if os.path.exists('data/tds_pdfs'):
-        sample_files = [f for f in os.listdir('data/tds_pdfs') if f.endswith('.pdf')]
-    
-    selected_sample = None
-    if sample_files:
-        selected_sample = st.selectbox(
-            "Available sample PDFs:",
-            options=[''] + sample_files,
-            format_func=lambda x: "Select a sample..." if x == '' else x
-        )
-    
-    # Extract button
-    if st.button("🔍 Extract Attributes", type="primary"):
-        pdf_path = None
-        
-        # Determine PDF source
-        if uploaded_file:
-            # Save uploaded file temporarily
-            with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
-                tmp_file.write(uploaded_file.read())
-                pdf_path = tmp_file.name
-        elif selected_sample and selected_sample != '':
-            pdf_path = os.path.join('data/tds_pdfs', selected_sample)
-        else:
-            st.warning("Please upload a PDF or select a sample file")
-            return
-        
-        with st.spinner("Extracting attributes from PDF..."):
-            result = extractor.extract_with_explainability(pdf_path)
-        
-        # Clean up temp file
-        if uploaded_file and os.path.exists(pdf_path):
-            os.unlink(pdf_path)
-        
-        # Display results
-        st.markdown("---")
-        st.subheader("📊 Extraction Results")
-        
-        # Overview metrics
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            st.metric("Total Pages", result['extraction']['total_pages'])
-        
-        with col2:
-            val = result['validation']
-            st.metric("Extraction Rate", f"{val['extraction_rate']:.0%}")
-        
-        with col3:
-            st.metric("Avg Confidence", f"{val['average_confidence']:.0%}")
-        
-        with col4:
-            st.metric("Quality Score", f"{val['quality_score']:.0%}")
-        
-        # Status indicator
-        if val['status'] == 'good':
-            st.success("✓ Good quality extraction")
-        else:
-            st.warning("⚠️ Extraction needs review")
-        
-        # Extracted attributes
-        st.subheader("📦 Extracted Attributes")
-        
-        attributes = result['extraction']['attributes']
-        
-        for attr_name, attr_data in attributes.items():
-            with st.expander(f"**{attr_name.upper().replace('_', ' ')}**", expanded=True):
-                if attr_data['value']:
-                    col1, col2 = st.columns([1, 2])
-                    
-                    with col1:
-                        st.markdown(f"**Value:** `{attr_data['value']}`")
-                        st.markdown(f"**Confidence:** {attr_data['confidence']:.0%}")
-                    
-                    with col2:
-                        st.markdown(f"**Source:** {attr_data['explanation']}")
-                        if attr_data['source'] and attr_data['source']['context']:
-                            st.code(attr_data['source']['context'], language=None)
-                else:
-                    st.warning(attr_data['explanation'])
-        
-        # Explainability section
-        st.subheader("💡 Extraction Explainability")
-        
-        exp = result['explainability']
-        
-        st.markdown(f"**Method:** {exp['method']}")
-        st.markdown(f"**Confidence Calculation:** {exp['confidence_calculation']}")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            if exp['attributes_found']:
-                st.success(f"**Attributes Found:** {', '.join(exp['attributes_found'])}")
-        
-        with col2:
-            if exp['attributes_missing']:
-                st.error(f"**Attributes Missing:** {', '.join(exp['attributes_missing'])}")
-
-
-def render_batch_processing_tab():
-    """Render the batch processing tab"""
-    st.header("⚡ Batch Processing")
-    st.markdown("Process multiple materials at once for efficiency.")
-    
-    classifier = load_classifier()
-    
-    if classifier is None:
-        st.error("❌ Model not found. Please train the model first.")
-        return
-    
-    # Load sample data
-    if os.path.exists('data/mock_materials.csv'):
-        st.subheader("Sample Data")
-        df = pd.read_csv('data/mock_materials.csv')
-        
-        st.markdown(f"**Total records available:** {len(df)}")
-        
-        num_samples = st.slider("Number of samples to process:", 5, 50, 10)
-        
-        if st.button("🚀 Process Batch", type="primary"):
-            with st.spinner(f"Processing {num_samples} materials..."):
-                sample_df = df.head(num_samples).copy()
-                
-                # Get predictions
-                descriptions = sample_df['Material_Description'].values
-                results = classifier.predict_with_confidence(descriptions)
-                
-                # Add predictions to dataframe
-                sample_df['Predicted_UNSPSC'] = [r['predicted_unspsc'] for r in results]
-                sample_df['Confidence'] = [f"{r['confidence']:.1%}" for r in results]
-                sample_df['Match'] = sample_df['UNSPSC_Code'] == sample_df['Predicted_UNSPSC']
-            
-            st.success(f"✓ Processed {num_samples} materials")
-            
-            # Display metrics
-            accuracy = (sample_df['Match'].sum() / len(sample_df)) * 100
-            
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("Total Processed", len(sample_df))
-            with col2:
-                st.metric("Correct Predictions", sample_df['Match'].sum())
-            with col3:
-                st.metric("Accuracy", f"{accuracy:.1f}%")
-            
-            # Display results
-            st.subheader("📊 Results")
-            
-            display_df = sample_df[[
-                'Material_ID', 'Material_Description', 
-                'UNSPSC_Code', 'Predicted_UNSPSC', 'Confidence', 'Match'
-            ]]
-            
-            st.dataframe(
-                display_df,
-                use_container_width=True,
-                hide_index=True,
-                column_config={
-                    "Match": st.column_config.CheckboxColumn("Match")
-                }
-            )
-            
-            # Download results
-            csv = display_df.to_csv(index=False)
-            st.download_button(
-                label="📥 Download Results as CSV",
-                data=csv,
-                file_name="classification_results.csv",
-                mime="text/csv"
-            )
-    else:
-        st.warning("No sample data found. Run `python utils/data_generator.py` first.")
 
 
 # ============================================================================
 # MAIN CLASSIFICATION INTERFACE
 # ============================================================================
-# This is the PRIMARY function that handles the complete classification workflow
 
 def render_combined_classification_tab():
     """
-    Main classification interface requiring BOTH material description AND PDF.
-    
-    WORKFLOW:
-    1. Load ML models (classifier + PDF extractor)
-    2. Get material description from user (REQUIRED)
-    3. Get PDF file from user (REQUIRED)
-    4. Validate both inputs are provided
-    5. Extract attributes from PDF
-    6. Combine description + PDF attributes
-    7. Classify using enhanced description
-    8. Display top 5 predictions with explainability
+    Main classification interface with professional form-based design
     """
     
+    # Inject custom CSS
+    inject_custom_css()
+    
     # === HEADER SECTION ===
-    st.header("🎯 Material Classification")
-    st.markdown("Classify materials using **both** material description and TDS PDF for accurate UNSPSC predictions.")
-    # Warning box to emphasize both inputs are mandatory
-    st.info("⚠️ **Both material description and PDF are required** for classification.")
+    st.markdown('<h2 style="color: #000000; margin-bottom: 8px;">Material UNSPSC Classification System</h2>', unsafe_allow_html=True)
+    st.markdown('<p style="color: #000000; font-size: 14px; margin-bottom: 20px;"><strong>SAP Master Data Governance</strong> | Automated classification using material descriptions and Technical Data Sheets</p>', unsafe_allow_html=True)
+    
+    st.markdown("---")
     
     # === LOAD ML MODELS ===
-    # These are cached, so they load only once per session
-    classifier = load_classifier()  # ML model for classification
-    extractor = load_pdf_extractor()  # Tool to extract attributes from PDF
+    classifier = load_classifier()
+    extractor = load_pdf_extractor()
     
-    # Check if classifier was trained - if not, show error and stop
     if classifier is None:
-        st.error("❌ Model not found. Please train the model first by running: `python train_model.py`")
+        st.error(" Model not found. Please train the model first by running: `python train_model.py`")
         return
     
-    # Models loaded successfully
-    st.success("✓ Models loaded successfully")
+    st.success(" Models loaded successfully")
     
     # ========================================================================
-    # STEP 1: MATERIAL DESCRIPTION INPUT (REQUIRED)
+    # INPUT SECTION
     # ========================================================================
-    st.subheader("📋 Step 1: Provide Material Description (Required)")
+    st.markdown('<h3 style="color: #000000; margin-top: 20px; margin-bottom: 16px; font-weight: 700;">Input Information</h3>', unsafe_allow_html=True)
     
-    # Create two-column layout: main input area + tips sidebar
-    col1, col2 = st.columns([2, 1])
+    material_description = st.text_area(
+        "Material Description (Required):",
+        height=120,
+        placeholder="e.g., High-Quality Plastic Packaging for Industrial Use",
+        key="combined_desc"
+    )
+    
+    # PDF Upload Section
+    st.markdown("**Technical Data Sheet (Required):**")
+    
+    col1, col2 = st.columns(2)
     
     with col1:
-        # Text area for material description input
-        material_description = st.text_area(
-            "Enter material description:",
-            height=100,
-            placeholder="e.g., High-Quality Plastic Packaging for Industrial Use",
-            key="combined_desc"  # Unique key to avoid conflicts
+        uploaded_file = st.file_uploader(
+            "Upload TDS PDF:",
+            type=['pdf'],
+            help="Upload a Technical Data Sheet in PDF format",
+            key="combined_pdf"
         )
     
     with col2:
-        # Tips box to help users write better descriptions
-        st.info("""
-        **Tips:**
-        - Include material type
-        - Mention key features
-        - Specify intended use
-        """)
-    
-    # ========================================================================
-    # STEP 2: PDF UPLOAD (REQUIRED)
-    # ========================================================================
-    st.subheader("📄 Step 2: Upload Technical Data Sheet (Required)")
-    
-    # File uploader widget - accepts only PDF files
-    uploaded_file = st.file_uploader(
-        "Choose a TDS PDF file",
-        type=['pdf'],  # Restrict to PDF files only
-        help="Upload a Technical Data Sheet in PDF format (Required)",
-        key="combined_pdf"  # Unique key to avoid conflicts
-    )
-    
-    # Alternative: Use sample files for testing/demo
-    st.markdown("**Or select a sample TDS file:**")
-    sample_files = []
-    
-    # Check if sample PDFs directory exists
-    if os.path.exists('data/tds_pdfs'):
-        # Get list of all PDF files in the directory
-        sample_files = [f for f in os.listdir('data/tds_pdfs') if f.endswith('.pdf')]
-    
-    selected_sample = None
-    if sample_files:
-        # Dropdown to select from available sample PDFs
-        selected_sample = st.selectbox(
-            "Available sample PDFs:",
-            options=[''] + sample_files,  # Empty string as first option (no selection)
-            format_func=lambda x: "Select a sample TDS file..." if x == '' else x,
-            key="combined_sample"
-        )
-    
-    # ========================================================================
-    # CLASSIFICATION BUTTON & PROCESSING
-    # ========================================================================
-    # When user clicks classify button, execute the following logic
-    if st.button("🚀 Classify Material", type="primary"):
+        sample_files = []
+        if os.path.exists('data/tds_pdfs'):
+            sample_files = [f for f in os.listdir('data/tds_pdfs') if f.endswith('.pdf')]
         
-        # === VALIDATION STEP 1: Check Material Description ===
+        selected_sample = None
+        if sample_files:
+            selected_sample = st.selectbox(
+                "Or select a sample TDS file:",
+                options=[''] + sample_files,
+                format_func=lambda x: "Select a sample..." if x == '' else x,
+                key="combined_sample"
+            )
+    
+    # Classify Button
+    st.markdown("---")
+    if st.button("Classify Material", type="primary", use_container_width=True):
+        
+        # Validation
         if not material_description.strip():
-            st.error("❌ Material description is required. Please enter a material description.")
-            return  # Stop execution if validation fails
+            st.error("❌ Material description is required")
+            return
         
-        # === VALIDATION STEP 2: Check PDF File ===
         pdf_path = None
+        pdf_display_path = None
         
-        # Case 1: User uploaded a file
         if uploaded_file:
-            # Save uploaded file to temporary location
-            # (Streamlit uploads need to be saved to disk before processing)
             with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
                 tmp_file.write(uploaded_file.read())
                 pdf_path = tmp_file.name
-        
-        # Case 2: User selected a sample file
+                pdf_display_path = pdf_path
         elif selected_sample and selected_sample != '':
             pdf_path = os.path.join('data/tds_pdfs', selected_sample)
+            pdf_display_path = pdf_path
         
-        # If neither option was used, show error
         if not pdf_path:
-            st.error("❌ TDS PDF is required. Please upload a PDF file or select a sample PDF.")
-            return  # Stop execution if validation fails
-        
-        # === BOTH INPUTS PROVIDED - PROCEED WITH CLASSIFICATION ===
+            st.error("❌ TDS PDF is required")
+            return
         
         # ========================================================================
-        # STEP 3: EXTRACT ATTRIBUTES FROM PDF
+        # PROCESSING
         # ========================================================================
-        pdf_attributes = {}  # Will store extracted attributes (weight, dimensions, etc.)
         
-        # Show spinner while extracting (can take a few seconds)
-        with st.spinner("Extracting attributes from PDF..."):
-            # Call PDF extractor - returns extracted attributes with confidence scores
+        with st.spinner("🔄 Extracting attributes from PDF..."):
             pdf_result = extractor.extract_with_explainability(pdf_path)
             pdf_attributes = pdf_result['extraction']['attributes']
         
-        # Clean up temporary file if it was an upload
-        if uploaded_file and os.path.exists(pdf_path):
-            os.unlink(pdf_path)  # Delete temporary file
-        
-        # ========================================================================
-        # STEP 4: COMBINE DESCRIPTION + PDF ATTRIBUTES
-        # ========================================================================
-        # This is the KEY STEP that improves classification accuracy!
-        # We append PDF attributes to the description to give more context to the classifier
-        
-        attribute_text_parts = []  # List to store formatted attribute text
-        
-        # Loop through each extracted attribute
+        # Build enhanced description
+        attribute_text_parts = []
         for attr_name, attr_data in pdf_attributes.items():
-            if attr_data['value']:  # Only include if attribute was found
-                # Format: "weight: 2.5 kg", "manufacturer: BASF", etc.
+            if attr_data['value']:
                 attribute_text_parts.append(f"{attr_name.replace('_', ' ')}: {attr_data['value']}")
         
-        # Create enhanced description
         if attribute_text_parts:
-            # Combine: original description + " " + all PDF attributes
             enhanced_description = material_description + " " + " ".join(attribute_text_parts)
-            st.success(f"✓ Enhanced description with {len(attribute_text_parts)} PDF attributes")
         else:
-            # No attributes extracted - use original description only
             enhanced_description = material_description
-            st.warning("⚠️ No attributes extracted from PDF. Classification will use description only.")
         
-        # ========================================================================
-        # STEP 5: CLASSIFY THE MATERIAL
-        # ========================================================================
-        # Show spinner while classifying
-        with st.spinner("Classifying material with combined data..."):
-            # Get predictions with confidence scores
-            # Input: enhanced description (description + PDF attributes)
-            # Output: predicted UNSPSC, confidence, top 5 predictions
+        with st.spinner("🔄 Classifying material..."):
             results = classifier.predict_with_confidence([enhanced_description])
-            result = results[0]  # Get first result (single item)
-            
-            # Get explanation - which keywords influenced the classification?
+            result = results[0]
             explanation = classifier.explain_prediction(enhanced_description, result)
         
-        # Display results
+        # Clean up temp file
+        if uploaded_file and os.path.exists(pdf_path):
+            pass  # Keep for display, will clean up later
+        
+        # ========================================================================
+        # RESULTS DISPLAY - NEW PROFESSIONAL LAYOUT
+        # ========================================================================
+        
         st.markdown("---")
-        st.subheader("📊 Classification Results")
+        st.markdown('<h2 style="color: #000000; margin-top: 20px; margin-bottom: 20px; font-weight: 700;">Classification Results</h2>', unsafe_allow_html=True)
         
-        # Main result
-        col1, col2 = st.columns(2)
+        # ========================================================================
+        # MATERIAL INFO BANNER (Top Section)
+        # ========================================================================
         
-        with col1:
-            st.metric("Predicted UNSPSC Code", result['predicted_unspsc'])
+        manufacturer = pdf_attributes.get('manufacturer', {}).get('value', 'N/A')
+        model = pdf_attributes.get('model', {}).get('value', 'N/A')
+        material = pdf_attributes.get('material', {}).get('value', 'N/A')
         
-        with col2:
-            confidence = result['confidence']
-            st.metric("Confidence Score", f"{confidence:.1%}")
+        st.markdown(f"""
+        <div class="material-info-banner">
+            <h3 style="margin-top: 0; margin-bottom: 15px; color: #FFFFFF; font-size: 16px; font-weight: 700;">▶ Request Information</h3>
+            <div class="info-item">
+                <span class="info-label" style="color: #FFFFFF;">Material Description:</span>
+                <span style="color: #FFFFFF;">{material_description[:100]}{'...' if len(material_description) > 100 else ''}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label" style="color: #FFFFFF;">Manufacturer:</span>
+                <span style="color: #FFFFFF;">{manufacturer}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label" style="color: #FFFFFF;">Model/Type:</span>
+                <span style="color: #FFFFFF;">{model}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label" style="color: #FFFFFF;">Material:</span>
+                <span style="color: #FFFFFF;">{material}</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # ========================================================================
+        # 2-COLUMN LAYOUT: Classification Details | PDF Viewer
+        # ========================================================================
+        
+        col_left, col_right = st.columns([6, 4])
+        
+        with col_left:
+            # ================================================================
+            # CLASSIFICATION DETAILS SECTION
+            # ================================================================
             
-            if confidence >= 0.8:
-                st.success("High confidence")
-            elif confidence >= 0.6:
-                st.warning("Medium confidence - review recommended")
-            else:
-                st.error("Low confidence - manual review required")
-        
-        # Show what data was used
-        st.subheader("📦 Data Sources Used")
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("**✓ Material Description**")
-            st.text_area("Original description:", material_description, height=80, disabled=True, key="show_desc")
-        
-        with col2:
-            st.markdown("**✓ PDF Attributes Extracted**")
-            pdf_info = "\n".join([f"• {k.replace('_', ' ').title()}: {v['value']}" 
-                                  for k, v in pdf_attributes.items() if v['value']])
-            if pdf_info:
-                st.text_area("Extracted attributes:", pdf_info, height=80, disabled=True, key="show_pdf")
-            else:
-                st.info("No attributes were successfully extracted from the PDF")
-        
-        # Top predictions (show top 5)
-        st.subheader("🎯 Top 5 Predictions")
-        
-        pred_data = []
-        for idx, pred in enumerate(result['top_predictions'][:5], 1):
-            pred_data.append({
-                'Rank': idx,
-                'UNSPSC Code': pred['unspsc_code'],
-                'Probability': f"{pred['probability']:.1%}"
-            })
-        
-        st.dataframe(pd.DataFrame(pred_data), use_container_width=True, hide_index=True)
-        
-        # Explainability
-        st.subheader("💡 Explainability")
-        
-        st.info(explanation['explanation'])
-        
-        if explanation['influential_words']:
-            st.markdown("**Most Influential Keywords:**")
+            st.markdown('<div class="classification-section">', unsafe_allow_html=True)
+            st.markdown('<div class="section-title">■ Classification Details</div>', unsafe_allow_html=True)
             
-            words_data = []
-            for word_info in explanation['influential_words'][:8]:
-                words_data.append({
-                    'Keyword': word_info['word'],
-                    'Importance Score': f"{word_info['importance']:.4f}",
-                    'Weight': f"{word_info['weight']:.4f}"
-                })
+            # UNSPSC Selection with Top 5 Predictions
+            st.markdown('<div class="field-label">Select Classification:</div>', unsafe_allow_html=True)
             
-            st.dataframe(pd.DataFrame(words_data), use_container_width=True, hide_index=True)
-        
-        # PDF Extraction Details
-        st.subheader("📄 PDF Extraction Details")
-        
-        val = pdf_result['validation']
-        
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("Extraction Rate", f"{val['extraction_rate']:.0%}")
-        with col2:
-            st.metric("Avg Confidence", f"{val['average_confidence']:.0%}")
-        with col3:
-            st.metric("Quality Score", f"{val['quality_score']:.0%}")
-        
-        with st.expander("View detailed PDF extraction"):
+            # Create options for selectbox with confidence scores
+            unspsc_options = []
+            for idx, pred in enumerate(result['top_predictions'][:5]):
+                unspsc_options.append(
+                    f"{pred['unspsc_code']} ({pred['probability']:.0%})"
+                )
+            
+            selected_unspsc = st.selectbox(
+                "UNSPSC Code:",
+                options=unspsc_options,
+                index=0,
+                label_visibility="collapsed"
+            )
+            
+            # Display primary prediction with confidence badge
+            primary_confidence = result['confidence']
+            st.markdown(f"""
+            <div style="margin-top: 10px; margin-bottom: 20px; padding: 12px; background: #F5F6F7; border-radius: 4px;">
+                <span style="color: #000000; font-weight: 700;">Primary Prediction:</span>
+                <span style="color: #000000; font-size: 16px; font-weight: 700; margin-left: 10px;">
+                    {result['predicted_unspsc']}
+                </span>
+                {get_confidence_badge(primary_confidence)}
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown('<div class="section-title" style="margin-top: 30px;">■ Extracted Attributes</div>', unsafe_allow_html=True)
+            
+            # ================================================================
+            # EXTRACTED ATTRIBUTES AS FORM FIELDS
+            # ================================================================
+            
+            # Define display names for SAP MDG integration
+            # These map to standard SAP Material Master fields
+            display_names = {
+                # Technical Specifications
+                'max_flow': 'Maximum Flow',
+                'max_pressure': 'Maximum Operating Pressure',
+                'temperature_range': 'Operating Temperature Range',
+                'max_speed': 'Maximum Speed',
+                
+                # Vendor/Manufacturer (SAP Vendor Master)
+                'manufacturer': 'Manufacturer',
+                
+                # Material Identification (SAP Material Master)
+                'model': 'Model/Type',
+                'material': 'Material Composition',
+                
+                # Physical Characteristics (SAP Basic Data)
+                'weight': 'Net Weight',
+                'dimensions': 'Dimensions (L×W×H)',
+                
+                # Procurement Data (SAP Purchasing)
+                'lead_time': 'Lead Time',
+                
+                # Classification (SAP)
+                'product_type': 'Product Type',
+                
+                # Quality/Compliance (SAP QM)
+                'certification': 'Certifications',
+                
+                # Additional Technical Data
+                'power': 'Power Rating',
+                'voltage': 'Voltage Rating',
+            }
+            
+            # Display only successfully extracted attributes (non-zero confidence)
+            extracted_count = 0
             for attr_name, attr_data in pdf_attributes.items():
-                if attr_data['value']:
-                    st.markdown(f"**{attr_name.upper().replace('_', ' ')}**")
-                    st.markdown(f"- Value: `{attr_data['value']}`")
-                    st.markdown(f"- Confidence: {attr_data['confidence']:.0%}")
-                    st.markdown(f"- Source: {attr_data['explanation']}")
-                    if attr_data['source'] and attr_data['source']['context']:
-                        st.code(attr_data['source']['context'], language=None)
-                    st.markdown("---")
+                # Only show fields that were successfully extracted
+                if attr_data['value'] and attr_data['confidence'] > 0:
+                    display_name = display_names.get(attr_name, attr_name.replace('_', ' ').title())
+                    confidence = attr_data['confidence']
+                    
+                    st.markdown(f"""
+                    <div class="form-field">
+                        <span class="field-label">{display_name}:</span>
+                        {get_confidence_badge(confidence)}
+                        <div style="margin-top: 8px;">
+                            <span class="field-value">{attr_data['value']}</span>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    extracted_count += 1
+            
+            # Show message if no attributes were extracted
+            if extracted_count == 0:
+                st.info("ℹ️ No attributes could be extracted from the PDF. The document may not contain standard technical specifications.")
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+            # ================================================================
+            # EXPLAINABILITY SECTION
+            # ================================================================
+            
+            with st.expander("▶ View Classification Explainability", expanded=False):
+                st.markdown(f"**Explanation:** {explanation['explanation']}")
+                
+                if explanation['influential_words']:
+                    st.markdown("**Most Influential Keywords:**")
+                    words_df = pd.DataFrame([
+                        {
+                            'Keyword': w['word'],
+                            'Importance': f"{w['importance']:.4f}",
+                            'Weight': f"{w['weight']:.4f}"
+                        }
+                        for w in explanation['influential_words'][:8]
+                    ])
+                    st.dataframe(words_df, use_container_width=True, hide_index=True)
+            
+            # ================================================================
+            # PDF EXTRACTION METRICS
+            # ================================================================
+            
+            with st.expander("▶ View PDF Extraction Details", expanded=False):
+                val = pdf_result['validation']
+                
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Extraction Rate", f"{val['extraction_rate']:.0%}")
+                with col2:
+                    st.metric("Avg Confidence", f"{val['average_confidence']:.0%}")
+                with col3:
+                    st.metric("Quality Score", f"{val['quality_score']:.0%}")
+                
+                st.markdown("**Extraction Sources:**")
+                for attr_name, attr_data in pdf_attributes.items():
+                    if attr_data['value']:
+                        st.markdown(f"**{attr_name.replace('_', ' ').title()}**")
+                        st.markdown(f"- Source: {attr_data['explanation']}")
+                        if attr_data['source'] and attr_data['source']['context']:
+                            st.code(attr_data['source']['context'][:200], language=None)
+        
+        with col_right:
+            # ================================================================
+            # PDF VIEWER SECTION
+            # ================================================================
+            
+            st.markdown('<div class="section-title">■ Technical Data Sheet</div>', unsafe_allow_html=True)
+            
+            if pdf_display_path and os.path.exists(pdf_display_path):
+                display_pdf(pdf_display_path)
+            else:
+                st.info("PDF preview not available")
+        
+        # Clean up temp file after display
+        if uploaded_file and pdf_path and os.path.exists(pdf_path):
+            try:
+                os.unlink(pdf_path)
+            except:
+                pass
 
 
 # ============================================================================
@@ -667,28 +455,21 @@ def render_combined_classification_tab():
 # ============================================================================
 
 def main():
-    """
-    Main application entry point.
+    """Main application entry point"""
     
-    This function is called when the app starts.
-    It displays the title and renders the main classification interface.
-    """
-    
-    # === APPLICATION HEADER ===
-    st.title("📦 Material UNSPSC Classification")
     st.markdown("""
-    Automated classification of materials into UNSPSC codes using both material descriptions and Technical Data Sheets.
-    """)
+    <div style="text-align: center; padding: 20px 0; background: #FFFFFF; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <h1 style="color: #000000; margin-bottom: 10px; font-weight: 700;">SAP Material Classification</h1>
+        <p style="color: #000000; font-size: 16px;">
+            Master Data Governance | Automated UNSPSC Classification
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    # === RENDER MAIN INTERFACE ===
-    # Call the main classification function
-    # (This is the only tab/section currently displayed)
+    st.markdown("---")
+    
     render_combined_classification_tab()
 
 
-# ============================================================================
-# APPLICATION STARTUP
-# ============================================================================
-# This block runs when the script is executed directly (not imported)
 if __name__ == "__main__":
-    main()  # Start the Streamlit application
+    main()

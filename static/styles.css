@@ -1,0 +1,341 @@
+/* SAP Horizon Theme - Modern Fiori Design */
+
+/* Global Styles */
+.stApp {
+    background-color: #F5F6F7;
+}
+
+/* Material Info Header Banner - SAP Horizon */
+.material-info-banner {
+    background: #FFFFFF;
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid #D9D9D9;
+    margin-bottom: 16px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #0070F2;
+}
+
+.info-item {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #000000;
+}
+
+.info-label {
+    font-weight: 700;
+    margin-right: 8px;
+    color: #000000;
+}
+
+/* Classification Section - SAP Horizon Card */
+.classification-section {
+    background: #FFFFFF;
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid #D9D9D9;
+    margin-bottom: 16px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+    color: #000000;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #E5E5E5;
+}
+
+/* Form Field Styling - SAP Horizon */
+.form-field {
+    background: #FAFAFA;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    border: 1px solid #E5E5E5;
+    transition: border-color 0.2s;
+}
+
+.form-field:hover {
+    border-color: #0070F2;
+}
+
+.field-label {
+    color: #000000;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.field-value {
+    color: #000000;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 12px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #D9D9D9;
+    display: inline-block;
+    min-width: 200px;
+}
+
+/* SAP Horizon Status Indicators */
+.confidence-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 12px;
+    margin-left: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.confidence-high {
+    background: #E8F5E9;
+    color: #2B7C2F;
+    border: 1px solid #A5D6A7;
+}
+
+.confidence-medium {
+    background: #FFF4E5;
+    color: #E76500;
+    border: 1px solid #FFB74D;
+}
+
+.confidence-low {
+    background: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #EF9A9A;
+}
+
+/* PDF Viewer Section - SAP Horizon */
+.pdf-viewer-section {
+    background: #FFFFFF;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #D9D9D9;
+    height: 100%;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Dropdown Styling - SAP Horizon */
+.stSelectbox > div > div {
+    border: 1px solid #89919A !important;
+    border-radius: 4px !important;
+    background: #FFFFFF !important;
+}
+
+.stSelectbox > div > div:focus-within {
+    border: 2px solid #0070F2 !important;
+    box-shadow: 0 0 0 1px #0070F2;
+}
+
+/* Selectbox text color - make visible */
+.stSelectbox label {
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+.stSelectbox div[data-baseweb="select"] > div {
+    color: #000000 !important;
+}
+
+.stSelectbox div[data-baseweb="select"] span {
+    color: #000000 !important;
+}
+
+.stSelectbox input {
+    color: #000000 !important;
+}
+
+/* Button Styling - SAP Horizon Primary Action */
+.stButton > button {
+    background: #0070F2;
+    color: #FFFFFF;
+    font-weight: 600;
+    border-radius: 4px;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.stButton > button:hover {
+    background: #0064D9;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 112, 242, 0.2);
+}
+
+.stButton > button:active {
+    background: #0059BF;
+}
+
+/* Input Fields - SAP Horizon */
+.stTextArea textarea {
+    border: 1px solid #89919A !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+}
+
+.stTextArea textarea:focus {
+    color: #000000 !important;
+    border: 2px solid #0070F2 !important;
+    box-shadow: 0 0 0 1px #0070F2 !important;
+}
+
+/* Ensure textarea text is always black */
+.stTextArea textarea::placeholder {
+    color: #6C757D !important;
+    opacity: 0.7 !important;
+}
+
+/* Success/Info/Error Messages - Sky Blue Background with Black Text */
+.stAlert.stSuccess, 
+div[data-testid="stAlert"].stSuccess,
+div[data-baseweb="notification"] {
+    background-color: #87CEEB !important;
+    border-left: 4px solid #0070F2 !important;
+    padding: 12px 16px !important;
+    border-radius: 4px !important;
+    border: 1px solid #0070F2 !important;
+}
+
+.stAlert.stSuccess > div,
+.stAlert.stSuccess p,
+.stAlert.stSuccess span,
+.stAlert.stSuccess div,
+div[data-testid="stAlert"].stSuccess > div,
+div[data-testid="stAlert"].stSuccess p,
+div[data-testid="stAlert"].stSuccess span,
+div[data-testid="stAlert"].stSuccess div,
+div[data-baseweb="notification"] > div,
+div[data-baseweb="notification"] p,
+div[data-baseweb="notification"] span {
+    color: #000000 !important;
+    font-weight: 700 !important;
+    background-color: transparent !important;
+}
+
+.stAlert.stSuccess [data-testid="stMarkdownContainer"],
+div[data-testid="stAlert"].stSuccess [data-testid="stMarkdownContainer"],
+div[data-baseweb="notification"] [data-testid="stMarkdownContainer"] {
+    color: #000000 !important;
+    background-color: transparent !important;
+}
+
+/* Override Streamlit's default success notification styles */
+div[data-baseweb="notification"][kind="success"] {
+    background-color: #87CEEB !important;
+}
+
+.stInfo {
+    background-color: #E3F2FD !important;
+    border-left: 4px solid #0070F2 !important;
+    padding: 12px 16px !important;
+    border-radius: 4px !important;
+}
+
+.stInfo > div {
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+.stError {
+    background-color: #FFEBEE !important;
+    border-left: 4px solid #D32F2F !important;
+    padding: 12px 16px !important;
+    border-radius: 4px !important;
+}
+
+.stError > div {
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+/* Fix Streamlit default text colors - All Black */
+.element-container {
+    color: #000000 !important;
+}
+
+/* Markdown text visibility */
+.stMarkdown {
+    color: #000000 !important;
+}
+
+.stMarkdown p, .stMarkdown li, .stMarkdown span {
+    color: #000000 !important;
+}
+
+/* Label visibility */
+label {
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+/* Expander text */
+.streamlit-expanderHeader {
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+/* Expander styling - default black, blue on hover */
+div[data-testid="stExpander"] details summary {
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+div[data-testid="stExpander"] details summary:hover {
+    color: #0070F2 !important;
+}
+
+div[data-testid="stExpander"] details summary p {
+    color: #000000 !important;
+}
+
+div[data-testid="stExpander"] details summary:hover p {
+    color: #0070F2 !important;
+}
+
+/* Expander arrow/icon */
+div[data-testid="stExpander"] details summary svg {
+    color: #000000 !important;
+}
+
+div[data-testid="stExpander"] details summary:hover svg {
+    color: #0070F2 !important;
+}
+
+/* Code blocks - fix text visibility and padding */
+.stCodeBlock {
+    background-color: #2D3748 !important;
+    border-radius: 4px !important;
+    padding: 16px !important;
+}
+
+.stCodeBlock code {
+    color: #E2E8F0 !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    display: block !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+}
+
+.stCodeBlock pre {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+}
+
+/* Fix code element styling */
+code {
+    color: #E2E8F0 !important;
+    background-color: #2D3748 !important;
+    padding: 2px 6px !important;
+    border-radius: 3px !important;
+}

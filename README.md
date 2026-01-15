@@ -25,14 +25,7 @@ When you classify a material, the system returns:
 
 ## Getting Started
 
-### What You Need
-
-- Python 3.8 or higher installed
-- About 5 minutes to set everything up
-
 ### Quick Setup
-
-The easiest way is to use the automated setup script:
 
 ```bash
 cd material-classification-poc
@@ -42,29 +35,9 @@ chmod +x run_poc.sh
 
 This will create a virtual environment, install dependencies, generate training data, and train the model.
 
-### Manual Setup (If You Prefer)
-
-```bash
-# 1. Create and activate a virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Generate mock training data
-python utils/data_generator.py
-
-# 4. Train the classification model
-python train_model.py
-
-# 5. Launch the web interface
-streamlit run app.py
-```
-
 ## How to Use It
 
-Once you run `streamlit run app.py`, your browser will open to `http://localhost:8501`.
+Run `streamlit run app.py`
 
 ### Classifying a Material
 
@@ -97,42 +70,11 @@ The results show several pieces of information:
 - Shows why the model made its prediction
 - Helps you understand and trust the results
 
-## Project Structure
-
-Here's how I organized the code:
-
-```
-material-classification-poc/
-├── app.py                      # Main web interface (Streamlit)
-├── train_model.py              # Script to train the classifier
-├── train_model_comparison.py   # Compare multiple ML models
-├── requirements.txt            # Python dependencies
-│
-├── models/
-│   ├── classifier.py           # ML classification logic (TF-IDF + Logistic Regression)
-│   ├── pdf_extractor.py        # PDF attribute extraction
-│   └── multi_model_classifier.py  # Multi-model comparison utilities
-│
-├── utils/
-│   └── data_generator.py       # Generate mock training data
-│
-├── data/
-│   ├── mdg_multi_material_training_data_500.json  # Training data
-│   └── tds_pdfs/               # Sample Technical Data Sheets
-│
-├── trained_models/
-│   ├── classifier.pkl          # Trained model
-│   └── vectorizer.pkl          # TF-IDF vectorizer
-│
-└── static/
-    └── styles.css              # UI styling
-```
-
-## How It Works (Technical Details)
+## How It Works
 
 ### Classification Model
 
-I'm using a **TF-IDF vectorizer** combined with **Logistic Regression**:
+We are using a **TF-IDF vectorizer** combined with **Logistic Regression**:
 
 - **TF-IDF** converts text descriptions into numerical features based on word importance
 - **Logistic Regression** learns which features correspond to which UNSPSC codes

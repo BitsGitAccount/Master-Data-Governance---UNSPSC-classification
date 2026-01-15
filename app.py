@@ -326,7 +326,7 @@ def render_combined_classification_tab():
             st.markdown('<div class="section-title" style="margin-top: 30px;">■ Extracted Attributes</div>', unsafe_allow_html=True)
             
             # ================================================================
-            # EXTRACTED ATTRIBUTES AS FORM FIELDS
+            # EXTRACTED ATTRIBUTES AS TABLE
             # ================================================================
             
             # Define display names for SAP MDG integration
@@ -363,27 +363,50 @@ def render_combined_classification_tab():
                 'voltage': 'Voltage Rating',
             }
             
-            # Display only successfully extracted attributes (non-zero confidence)
+            # Build table data with three columns
+            table_data = []
             extracted_count = 0
+            
             for attr_name, attr_data in pdf_attributes.items():
                 # Only show fields that were successfully extracted
                 if attr_data['value'] and attr_data['confidence'] > 0:
                     display_name = display_names.get(attr_name, attr_name.replace('_', ' ').title())
                     confidence = attr_data['confidence']
+                    confidence_pct = f"{confidence * 100:.0f}%"
                     
-                    st.markdown(f"""
-                    <div class="form-field">
-                        <span class="field-label">{display_name}:</span>
-                        {get_confidence_badge(confidence)}
-                        <div style="margin-top: 8px;">
-                            <span class="field-value">{attr_data['value']}</span>
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    table_data.append({
+                        'Display Name': display_name,
+                        'Attribute Data': attr_data['value'],
+                        'Confidence': confidence_pct
+                    })
                     extracted_count += 1
             
-            # Show message if no attributes were extracted
-            if extracted_count == 0:
+            # Display table if attributes were extracted
+            if extracted_count > 0:
+                # Create DataFrame for better table display
+                df = pd.DataFrame(table_data)
+                
+                # Display using Streamlit's dataframe with custom styling
+                st.dataframe(
+                    df,
+                    use_container_width=True,
+                    hide_index=True,
+                    column_config={
+                        "Display Name": st.column_config.TextColumn(
+                            "Display Name",
+                            width="medium",
+                        ),
+                        "Attribute Data": st.column_config.TextColumn(
+                            "Attribute Data",
+                            width="large",
+                        ),
+                        "Confidence": st.column_config.TextColumn(
+                            "Confidence",
+                            width="small",
+                        ),
+                    }
+                )
+            else:
                 st.info("ℹ️ No attributes could be extracted from the PDF. The document may not contain standard technical specifications.")
             
             st.markdown('</div>', unsafe_allow_html=True)

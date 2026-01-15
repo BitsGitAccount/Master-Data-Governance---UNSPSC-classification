@@ -1,12 +1,81 @@
 """
 Training script for Material Classification Model
 Loads data, trains the model, and saves it for later use
+
+SUPPORTED DATA FORMATS:
+1. CSV file: data/mock_materials.csv (generated data)
+2. JSON file: data/mdg_multi_material_training_data_500.json (MDG data)
 """
 
 import pandas as pd
+import json
 from sklearn.model_selection import train_test_split
 from models.classifier import MaterialClassifier
 import os
+
+
+def load_training_data(data_source='csv'):
+    """
+    Load training data from either CSV or JSON source
+    
+    Args:
+        data_source: 'csv' or 'json'
+        
+    Returns:
+        pandas DataFrame with columns: Material_Description, UNSPSC_Code
+    """
+    if data_source == 'csv':
+        data_path = "data/mock_materials.csv"
+        if not os.path.exists(data_path):
+            print(f"\nError: CSV file not found at {data_path}")
+            print("Please run 'python utils/data_generator.py' first to generate mock data.")
+            return None
+        
+        print(f"\nLoading data from {data_path}...")
+        df = pd.read_csv(data_path)
+        return df
+    
+    elif data_source == 'json':
+        data_path = "data/mdg_multi_material_training_data_500.json"
+        if not os.path.exists(data_path):
+            print(f"\nError: JSON file not found at {data_path}")
+            return None
+        
+        print(f"\nLoading data from {data_path}...")
+        with open(data_path, 'r') as f:
+            json_data = json.load(f)
+        
+        # Convert JSON to DataFrame format expected by classifier
+        records = []
+        for item in json_data:
+            # Build enhanced description from material description and characteristics
+            description_parts = [item['material_description']]
+            
+            # Add manufacturer and part number
+            if item.get('manufacturer'):
+                description_parts.append(f"Manufacturer: {item['manufacturer']}")
+            if item.get('manufacturer_part_number'):
+                description_parts.append(f"Part: {item['manufacturer_part_number']}")
+            
+            # Add characteristics
+            if item.get('characteristics'):
+                for char_name, char_value in item['characteristics'].items():
+                    # Format characteristic name (remove prefixes and convert to readable format)
+                    clean_name = char_name.replace('AAD375002_', '').replace('BAH609003_', '').replace('BAJ196003_', '').replace('BAI188003_', '')
+                    clean_name = clean_name.replace('_', ' ').title()
+                    description_parts.append(f"{clean_name}: {char_value}")
+            
+            records.append({
+                'Material_Description': ' '.join(description_parts),
+                'UNSPSC_Code': item['unspsc_class']
+            })
+        
+        df = pd.DataFrame(records)
+        return df
+    
+    else:
+        print(f"\nError: Unknown data source '{data_source}'. Use 'csv' or 'json'")
+        return None
 
 
 def main():
@@ -14,16 +83,24 @@ def main():
     print("MATERIAL CLASSIFICATION MODEL TRAINING")
     print("="*60)
     
-    # Check if data exists
-    data_path = "data/mock_materials.csv"
-    if not os.path.exists(data_path):
-        print(f"\nError: Data file not found at {data_path}")
-        print("Please run 'python utils/data_generator.py' first to generate mock data.")
-        return
+    # Ask user which data source to use
+    print("\nAvailable data sources:")
+    print("1. CSV - Generated mock data (data/mock_materials.csv)")
+    print("2. JSON - MDG multi-material data (data/mdg_multi_material_training_data_500.json)")
+    
+    choice = input("\nSelect data source (1 or 2, default=2): ").strip()
+    
+    if choice == '1':
+        data_source = 'csv'
+    else:
+        data_source = 'json'  # Default to JSON
     
     # Load data
-    print(f"\nLoading data from {data_path}...")
-    df = pd.read_csv(data_path)
+    df = load_training_data(data_source)
+    
+    if df is None:
+        return
+    
     print(f"Loaded {len(df)} material records")
     
     # Display data statistics

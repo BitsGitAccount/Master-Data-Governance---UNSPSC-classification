@@ -136,10 +136,8 @@ def render_combined_classification_tab():
     inject_custom_css()
     
     # === HEADER SECTION ===
-    st.markdown('<h2 style="color: #000000; margin-bottom: 8px;">Material UNSPSC Classification System</h2>', unsafe_allow_html=True)
-    st.markdown('<p style="color: #000000; font-size: 14px; margin-bottom: 20px;"><strong>SAP Master Data Governance</strong> | Automated classification using material descriptions and Technical Data Sheets</p>', unsafe_allow_html=True)
-    
-    st.markdown("---")
+    st.markdown('<h2 style="color: #000000; margin-top: 10px; margin-bottom: 4px;">Material UNSPSC Classification System</h2>', unsafe_allow_html=True)
+    st.markdown('<p style="color: #000000; font-size: 14px; margin-bottom: 12px;"><strong>SAP Master Data Governance</strong> | Automated classification using material descriptions and Technical Data Sheets</p>', unsafe_allow_html=True)
     
     # === LOAD ML MODELS ===
     classifier = load_classifier()
@@ -154,44 +152,29 @@ def render_combined_classification_tab():
     # ========================================================================
     # INPUT SECTION
     # ========================================================================
-    st.markdown('<h3 style="color: #000000; margin-top: 20px; margin-bottom: 16px; font-weight: 700;">Input Information</h3>', unsafe_allow_html=True)
+    st.markdown('<h3 style="color: #000000; margin-top: 12px; margin-bottom: 12px; font-weight: 700;">Input Information</h3>', unsafe_allow_html=True)
     
-    material_description = st.text_area(
-        "Material Description (Required):",
-        height=120,
-        placeholder="e.g., High-Quality Plastic Packaging for Industrial Use",
-        key="combined_desc"
-    )
-    
-    # PDF Upload Section
-    st.markdown("**Technical Data Sheet (Required):**")
-    
+    # Create two columns for Material Description and TDS Upload
     col1, col2 = st.columns(2)
     
     with col1:
+        material_description = st.text_area(
+            "Material Description (Required):",
+            height=120,
+            placeholder="e.g., High-Quality Plastic Packaging for Industrial Use",
+            key="combined_desc"
+        )
+    
+    with col2:
         uploaded_file = st.file_uploader(
-            "Upload TDS PDF:",
+            "Technical Data Sheet (Required):",
             type=['pdf'],
             help="Upload a Technical Data Sheet in PDF format",
             key="combined_pdf"
         )
     
-    with col2:
-        sample_files = []
-        if os.path.exists('data/tds_pdfs'):
-            sample_files = [f for f in os.listdir('data/tds_pdfs') if f.endswith('.pdf')]
-        
-        selected_sample = None
-        if sample_files:
-            selected_sample = st.selectbox(
-                "Or select a sample TDS file:",
-                options=[''] + sample_files,
-                format_func=lambda x: "Select a sample..." if x == '' else x,
-                key="combined_sample"
-            )
-    
     # Classify Button
-    st.markdown("---")
+    st.markdown('<div style="margin-top: 15px; margin-bottom: 15px;"></div>', unsafe_allow_html=True)
     if st.button("Classify Material", type="primary", use_container_width=True):
         
         # Validation
@@ -207,9 +190,6 @@ def render_combined_classification_tab():
                 tmp_file.write(uploaded_file.read())
                 pdf_path = tmp_file.name
                 pdf_display_path = pdf_path
-        elif selected_sample and selected_sample != '':
-            pdf_path = os.path.join('data/tds_pdfs', selected_sample)
-            pdf_display_path = pdf_path
         
         if not pdf_path:
             st.error("❌ TDS PDF is required")
@@ -247,8 +227,8 @@ def render_combined_classification_tab():
         # RESULTS DISPLAY - NEW PROFESSIONAL LAYOUT
         # ========================================================================
         
-        st.markdown("---")
-        st.markdown('<h2 style="color: #000000; margin-top: 20px; margin-bottom: 20px; font-weight: 700;">Classification Results</h2>', unsafe_allow_html=True)
+        st.markdown('<div style="margin-top: 20px; margin-bottom: 10px;"></div>', unsafe_allow_html=True)
+        st.markdown('<h2 style="color: #000000; margin-top: 0; margin-bottom: 15px; font-weight: 700;">Classification Results</h2>', unsafe_allow_html=True)
         
         # ========================================================================
         # MATERIAL INFO BANNER (Top Section)
@@ -260,22 +240,24 @@ def render_combined_classification_tab():
         
         st.markdown(f"""
         <div class="material-info-banner">
-            <h3 style="margin-top: 0; margin-bottom: 15px; color: #FFFFFF; font-size: 16px; font-weight: 700;">▶ Request Information</h3>
-            <div class="info-item">
-                <span class="info-label" style="color: #FFFFFF;">Material Description:</span>
-                <span style="color: #FFFFFF;">{material_description[:100]}{'...' if len(material_description) > 100 else ''}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label" style="color: #FFFFFF;">Manufacturer:</span>
-                <span style="color: #FFFFFF;">{manufacturer}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label" style="color: #FFFFFF;">Model/Type:</span>
-                <span style="color: #FFFFFF;">{model}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label" style="color: #FFFFFF;">Material:</span>
-                <span style="color: #FFFFFF;">{material}</span>
+            <h3 style="margin-top: 0; margin-bottom: 10px; color: #FFFFFF; font-size: 16px; font-weight: 700;">▶ Request Information</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 30px;">
+                <div class="info-item">
+                    <span class="info-label" style="color: #FFFFFF;">Material Description:</span>
+                    <span style="color: #FFFFFF;">{material_description[:100]}{'...' if len(material_description) > 100 else ''}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" style="color: #FFFFFF;">Model/Type:</span>
+                    <span style="color: #FFFFFF;">{model}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" style="color: #FFFFFF;">Manufacturer:</span>
+                    <span style="color: #FFFFFF;">{manufacturer}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" style="color: #FFFFFF;">Material:</span>
+                    <span style="color: #FFFFFF;">{material}</span>
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -481,15 +463,13 @@ def main():
     """Main application entry point"""
     
     st.markdown("""
-    <div style="text-align: center; padding: 20px 0; background: #FFFFFF; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-        <h1 style="color: #000000; margin-bottom: 10px; font-weight: 700;">SAP Material Classification</h1>
-        <p style="color: #000000; font-size: 16px;">
+    <div style="text-align: center; padding: 10px 0 8px 0; background: #FFFFFF; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <h1 style="color: #000000; margin-bottom: 5px; font-weight: 700;">SAP Material Classification</h1>
+        <p style="color: #000000; font-size: 16px; margin: 0;">
             Master Data Governance | Automated UNSPSC Classification
         </p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown("---")
     
     render_combined_classification_tab()
 

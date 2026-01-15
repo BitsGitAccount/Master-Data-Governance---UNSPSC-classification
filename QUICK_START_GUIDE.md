@@ -1,13 +1,19 @@
-# Quick Start Guide - Material Classification PoC
+# Quick Start Guide
 
-## 🚀 Getting Started in 5 Minutes
+## Get Up and Running in 5 Minutes
 
-### Prerequisites
-- Python 3.8 or higher
-- pip (Python package manager)
-- 500 MB free disk space
+This guide will help you set up and start using the material classification system as quickly as possible.
 
-### Option 1: Automated Setup (Recommended)
+## Prerequisites
+
+Make sure you have:
+- Python 3.8 or higher installed (check with `python3 --version`)
+- About 500 MB of free disk space
+- 5 minutes of your time
+
+## Option 1: Automated Setup (Easiest)
+
+I created a script that does everything for you:
 
 ```bash
 cd material-classification-poc
@@ -16,286 +22,267 @@ chmod +x run_poc.sh
 ```
 
 This script will:
-1. ✅ Create virtual environment
-2. ✅ Install all dependencies
-3. ✅ Generate mock data (100 materials + 20 PDFs)
-4. ✅ Train the classification model
-5. ✅ Prepare the system for use
+1. Create a Python virtual environment
+2. Install all required packages
+3. Generate 500 sample materials with PDFs
+4. Train the classification model
+5. Tell you when it's ready to use
 
-**Expected time**: 3-5 minutes
+**Expected time**: 3-5 minutes depending on your computer
 
-### Option 2: Manual Setup
+When you see "Setup complete!", you're ready to go.
+
+## Option 2: Manual Setup (Step by Step)
+
+If you prefer to see what's happening at each step:
+
+### Step 1: Set Up Python Environment
 
 ```bash
-# 1. Navigate to project directory
+# Navigate to the project
 cd material-classification-poc
 
-# 2. Create virtual environment
+# Create a virtual environment
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Generate mock data
-python utils/data_generator.py
-
-# 5. Train the model
-python train_model.py
-
-# 6. Run the application
-streamlit run app.py
-```
-
-## 📱 Using the Application
-
-### Starting the Application
-
-```bash
-cd material-classification-poc
-source venv/bin/activate  # Activate virtual environment
-streamlit run app.py
-```
-
-The application will open automatically in your browser at: `http://localhost:8501`
-
-### Application Tabs
-
-#### 1. 🔍 Classification Tab
-**Purpose**: Classify individual materials into UNSPSC codes
-
-**Steps**:
-1. Enter a material description (e.g., "High-Quality Plastic Packaging")
-2. Click "🔍 Classify Material"
-3. View results:
-   - Predicted UNSPSC code
-   - Confidence score
-   - Top 3 predictions
-   - Influential keywords
-
-**Example Input**:
-```
-Premium Steel Pipes for Industrial Use
-```
-
-**Example Output**:
-```
-Predicted UNSPSC: 23456789
-Confidence: 85%
-Category: Steel Pipes and Tubes
-Keywords: 'steel', 'pipe', 'industrial'
-```
-
-#### 2. 📄 PDF Extraction Tab
-**Purpose**: Extract attributes from Technical Data Sheet PDFs
-
-**Steps**:
-1. Upload a PDF or select a sample file
-2. Click "🔍 Extract Attributes"
-3. View extracted attributes:
-   - Weight
-   - Dimensions
-   - Manufacturer
-   - Material ID
-   - Part Number
-
-**Sample Files Available**: 20 pre-generated TDS PDFs (MAT0001 - MAT0020)
-
-#### 3. ⚡ Batch Processing Tab
-**Purpose**: Process multiple materials simultaneously
-
-**Steps**:
-1. Select number of samples (5-50)
-2. Click "🚀 Process Batch"
-3. View results table with accuracy metrics
-4. Download results as CSV
-
-#### 4. ℹ️ About Tab
-**Purpose**: Learn about the system and its components
-
-## 🧪 Testing the System
-
-### Test Classification
-
-```bash
-# Test single material
-cd material-classification-poc
+# Activate it (macOS/Linux)
 source venv/bin/activate
-python << EOF
-from models.classifier import MaterialClassifier
 
-classifier = MaterialClassifier()
-classifier.load_model('trained_models')
-
-result = classifier.predict_with_confidence([
-    "Premium Plastic Packaging Material"
-])[0]
-
-print(f"Predicted: {result['predicted_unspsc']}")
-print(f"Confidence: {result['confidence']:.1%}")
-EOF
+# Or on Windows
+venv\Scripts\activate
 ```
 
-### Test PDF Extraction
+You'll know it worked when you see `(venv)` at the start of your command prompt.
+
+### Step 2: Install Dependencies
 
 ```bash
-# Test PDF extraction
-cd material-classification-poc
-source venv/bin/activate
-python models/pdf_extractor.py data/tds_pdfs/MAT0001_TDS.pdf
-```
-
-## 📊 Understanding Results
-
-### Classification Confidence Levels
-
-| Confidence | Meaning | Action |
-|------------|---------|--------|
-| ≥ 80% | High confidence | ✅ Accept automatically |
-| 60-79% | Medium confidence | ⚠️ Review recommended |
-| < 60% | Low confidence | ❌ Manual review required |
-
-### PDF Extraction Quality Scores
-
-| Score | Status | Meaning |
-|-------|--------|---------|
-| ≥ 80% | Good | ✅ High quality extraction |
-| 60-79% | Fair | ⚠️ Some attributes may need review |
-| < 60% | Poor | ❌ Manual verification needed |
-
-## 🔧 Troubleshooting
-
-### Issue: "Module not found" error
-
-**Solution**:
-```bash
-# Make sure virtual environment is activated
-source venv/bin/activate
-# Reinstall dependencies
 pip install -r requirements.txt
 ```
 
-### Issue: "Model not found" in UI
+This installs:
+- scikit-learn (machine learning)
+- streamlit (web interface)
+- PyMuPDF (PDF processing)
+- pandas (data handling)
+- and a few other utilities
 
-**Solution**:
+### Step 3: Generate Training Data
+
 ```bash
-# Train the model
-cd material-classification-poc
-source venv/bin/activate
-python train_model.py
-```
-
-### Issue: "No sample PDFs found"
-
-**Solution**:
-```bash
-# Generate mock data
-cd material-classification-poc
-source venv/bin/activate
 python utils/data_generator.py
 ```
 
-### Issue: Streamlit won't start
+This creates:
+- 500 sample material descriptions
+- 20 sample Technical Data Sheet PDFs
+- All saved in the `data/` folder
 
-**Solution**:
+You'll see progress messages as it generates each material and PDF.
+
+### Step 4: Train the Model
+
 ```bash
-# Check if port 8501 is available
-lsof -ti:8501 | xargs kill -9  # Kill any process using port 8501
+python train_model.py
+```
+
+This:
+- Loads the generated data
+- Trains a TF-IDF + Logistic Regression model
+- Tests its accuracy
+- Saves the trained model to `trained_models/`
+
+You should see accuracy metrics printed out (typically around 92% with the mock data).
+
+### Step 5: Launch the Application
+
+```bash
 streamlit run app.py
 ```
 
-## 📁 Project Structure Overview
+Your browser should automatically open to `http://localhost:8501`.
+
+If it doesn't, just copy that URL into your browser manually.
+
+## Using the Application
+
+### Your First Classification
+
+Once the app opens, you'll see a clean interface. Here's how to use it:
+
+1. **Enter a material description** in the text box
+   - Try: "Industrial stainless steel pipe, 316L grade, for chemical processing applications"
+
+2. **Select a sample PDF** from the dropdown
+   - Or upload your own if you have one
+   - The sample PDFs are named like "pump1.pdf", "Valve2.pdf", etc.
+
+3. **Click "Classify Material"**
+
+4. **Review the results**:
+   - Top prediction with confidence score
+   - Dropdown showing all 5 predictions
+   - Extracted attributes from the PDF
+   - Explanation of which keywords influenced the decision
+
+### What You're Seeing
+
+**Classification Details Section**:
+- Shows the predicted UNSPSC code
+- Confidence badge (green = high, yellow = medium, red = low)
+- Dropdown to see alternative predictions
+
+**Extracted Attributes Table**:
+- Technical specs pulled from the PDF
+- Each with its own confidence score
+- These get combined with your description for better accuracy
+
+**PDF Viewer**:
+- Shows the actual PDF on the right side
+- Helps you verify the extraction worked correctly
+
+**Explainability** (click to expand):
+- Shows which keywords were most important
+- Helps you understand why the model made its prediction
+- Useful for catching errors or verifying logic
+
+## Tips for Best Results
+
+### Writing Good Descriptions
+
+The more specific you are, the better the predictions:
+
+**Good examples**:
+- "Industrial hydraulic pump, centrifugal type, 50 GPM flow rate, stainless steel construction"
+- "Safety protective gloves, nitrile coating, cut-resistant level 5, for manufacturing applications"
+- "Electronic pressure sensor, 0-100 PSI range, 4-20mA output, explosion-proof rated"
+
+**Less helpful examples**:
+- "pump" (too vague)
+- "thing for factory" (no specific details)
+- "metal part" (could be anything)
+
+### Understanding Confidence Scores
+
+- **80-100% (Green)**: Model is very confident, likely correct
+- **60-79% (Yellow)**: Moderate confidence, worth reviewing
+- **Below 60% (Red)**: Low confidence, definitely review manually
+
+Low confidence isn't necessarily wrong - it might mean the material could fit multiple categories equally well.
+
+### When the Top Prediction Isn't Right
+
+That's why I included 5 predictions! Sometimes the material could fit multiple categories, or the description is ambiguous. Check the dropdown to see if one of the other predictions makes more sense.
+
+## Common Issues and Solutions
+
+### "Model not found" Error
+
+You need to train the model first:
+```bash
+python train_model.py
+```
+
+### "No module named X" Error
+
+Your virtual environment isn't activated or dependencies aren't installed:
+```bash
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Application Won't Start
+
+Port 8501 might be in use:
+```bash
+# Kill any process using that port
+lsof -ti:8501 | xargs kill -9
+
+# Try again
+streamlit run app.py
+```
+
+### PDF Extraction Not Working
+
+Make sure the PDF:
+- Contains selectable text (not a scanned image)
+- Follows a somewhat standard TDS format
+- Try one of the sample PDFs first to verify the system works
+
+## Testing with Sample Data
+
+I included several sample PDFs you can test with:
+
+**Pumps**: pump1.pdf through pump8.pdf
+- Various pump specifications
+- Different manufacturers and models
+
+**Valves**: Valve1.pdf through Valve4.pdf
+- Different valve types
+- Various pressure and temperature ratings
+
+Try different combinations of descriptions and PDFs to see how the system handles different inputs.
+
+## What to Expect
+
+With the synthetic training data, you should see:
+- Classifications complete in 1-2 seconds
+- Around 90%+ confidence on most predictions
+- All attributes successfully extracted from sample PDFs
+- Clear explanations for each prediction
+
+Remember, these numbers are based on mock data. With real training data, performance will improve significantly.
+
+## Next Steps
+
+Once you're comfortable with the basics:
+
+1. **Try different descriptions** - See how the system handles various materials
+2. **Upload your own PDFs** - Test with real Technical Data Sheets
+3. **Check the explainability** - Understand what drives each prediction
+4. **Read PROJECT_SUMMARY.md** - Learn more about how everything works
+5. **Explore train_model_comparison.py** - Compare different ML algorithms
+
+## Shutting Down
+
+When you're done:
+
+1. Go to your terminal
+2. Press `Ctrl+C` (or `Cmd+C` on Mac)
+3. The server will stop
+
+To start again later:
+```bash
+cd material-classification-poc
+source venv/bin/activate
+streamlit run app.py
+```
+
+## Getting Help
+
+If something's not working:
+
+1. Check this guide first
+2. Look at the error messages - they usually tell you what's wrong
+3. Check PROJECT_SUMMARY.md for more details
+4. Review the code comments - I documented everything thoroughly
+
+## File Checklist
+
+After setup, you should have:
 
 ```
-material-classification-poc/
-│
-├── 📊 data/                        # Generated data
-│   ├── mock_materials.csv          # 100 material records
-│   └── tds_pdfs/                   # 20 sample PDFs
-│
-├── 🤖 models/                      # Core models
-│   ├── classifier.py               # Classification logic
-│   └── pdf_extractor.py            # PDF extraction logic
-│
-├── 💾 trained_models/              # Saved models
-│   ├── classifier.pkl              # Trained classifier
-│   └── vectorizer.pkl              # TF-IDF vectorizer
-│
-├── 🛠️ utils/                       # Utilities
-│   └── data_generator.py           # Mock data generation
-│
-├── 🎨 app.py                       # Web UI (Streamlit)
-├── 🎓 train_model.py               # Training script
-├── 📋 requirements.txt             # Dependencies
-└── 🚀 run_poc.sh                   # Setup script
+✓ venv/ folder (virtual environment)
+✓ data/mdg_multi_material_training_data_500.json (training data)
+✓ data/tds_pdfs/ folder with sample PDFs
+✓ trained_models/classifier.pkl (trained model)
+✓ trained_models/vectorizer.pkl (TF-IDF vectorizer)
 ```
 
-## 💡 Tips for Best Results
+If any of these are missing, review the relevant setup step above.
 
-### Classification Tips
-1. **Be Specific**: Include material type, grade, and use case
-2. **Use Keywords**: Mention industry-standard terms
-3. **Consistent Format**: Similar materials should have similar descriptions
+## You're All Set!
 
-**Good Example**: "Premium Stainless Steel Pipe - Grade 316L - Industrial Use"
-**Poor Example**: "Metal thing for plumbing"
+That's it - you should now have a working material classification system. Start with simple examples and gradually try more complex materials to get a feel for how it works.
 
-### PDF Upload Tips
-1. **Use Standard TDS Format**: The system works best with structured TDS documents
-2. **Clear Text**: Ensure PDFs have selectable text (not scanned images)
-3. **Standard Units**: Use kg, cm, etc. for best extraction
-
-## 🎯 Common Use Cases
-
-### Use Case 1: New Material Classification
-```
-Input: "High-Density Polyethylene Packaging Container"
-Expected: UNSPSC Code for Plastic Packaging Materials
-Confidence: High (>80%)
-```
-
-### Use Case 2: Bulk Material Processing
-```
-Input: CSV file with 50 materials
-Process: Batch processing
-Output: CSV with predictions and confidence scores
-```
-
-### Use Case 3: TDS Attribute Extraction
-```
-Input: Technical Data Sheet PDF
-Output: Weight, Dimensions, Manufacturer, Part Number
-Validation: Source tracking for audit
-```
-
-## 📞 Support
-
-For issues or questions:
-1. Check the troubleshooting section above
-2. Review `PROJECT_SUMMARY.md` for detailed information
-3. Examine `README.md` for technical details
-
-## ✅ Verification Checklist
-
-Before considering setup complete, verify:
-
-- [ ] Virtual environment created
-- [ ] All dependencies installed
-- [ ] Mock data generated (check `data/` folder)
-- [ ] Model trained (check `trained_models/` folder)
-- [ ] Application starts without errors
-- [ ] Classification tab works
-- [ ] PDF extraction tab works
-- [ ] Batch processing works
-
-## 🎓 Next Steps
-
-1. **Explore the UI**: Try all tabs and features
-2. **Test with Custom Data**: Upload your own PDFs
-3. **Review Results**: Check accuracy and confidence scores
-4. **Provide Feedback**: Note areas for improvement
-5. **Plan Integration**: Consider SAP MDG integration strategy
-
----
-
-**Ready to proceed?** Run `streamlit run app.py` and start exploring! 🚀
+Remember: This is a proof of concept built with synthetic data. The real power comes when you train it on actual material descriptions from your organization.

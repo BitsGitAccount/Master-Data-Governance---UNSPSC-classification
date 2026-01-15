@@ -39,7 +39,6 @@ import base64  # For encoding PDF to display in iframe
 # ============================================================================
 st.set_page_config(
     page_title="Material UNSPSC Classification",
-    page_icon="📦",
     layout="wide"
 )
 

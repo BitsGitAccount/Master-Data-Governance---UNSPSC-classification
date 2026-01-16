@@ -157,11 +157,36 @@ def render_combined_classification_tab():
     col1, col2 = st.columns(2)
     
     with col1:
-        material_description = st.text_area(
+        # Material Description
+        material_description = st.text_input(
             "Material Description (Required):",
-            height=120,
+            max_chars=100,
             placeholder="e.g., High-Quality Plastic Packaging for Industrial Use",
             key="combined_desc"
+        )
+        
+        # Material Number
+        material_number = st.text_input(
+            "Material Number:",
+            max_chars=100,
+            placeholder="e.g., MAT-12345",
+            key="material_number"
+        )
+        
+        # Manufacturer Name
+        manufacturer_name = st.text_input(
+            "Manufacturer Name:",
+            max_chars=100,
+            placeholder="e.g., ABC Manufacturing Co.",
+            key="manufacturer_name"
+        )
+        
+        # Manufacturer Part Number (MPN)
+        manufacturer_part_number = st.text_input(
+            "Manufacturer Part Number (MPN):",
+            max_chars=100,
+            placeholder="e.g., MPN-67890",
+            key="manufacturer_mpn"
         )
     
     with col2:
@@ -202,16 +227,29 @@ def render_combined_classification_tab():
             pdf_result = extractor.extract_with_explainability(pdf_path)
             pdf_attributes = pdf_result['extraction']['attributes']
         
-        # Build enhanced description
+        # Build enhanced description combining all input fields
+        input_parts = [material_description]
+        
+        # Add optional fields if provided
+        if material_number.strip():
+            input_parts.append(f"Material Number: {material_number}")
+        if manufacturer_name.strip():
+            input_parts.append(f"Manufacturer: {manufacturer_name}")
+        if manufacturer_part_number.strip():
+            input_parts.append(f"MPN: {manufacturer_part_number}")
+        
+        # Add PDF extracted attributes
         attribute_text_parts = []
         for attr_name, attr_data in pdf_attributes.items():
             if attr_data['value']:
                 attribute_text_parts.append(f"{attr_name.replace('_', ' ')}: {attr_data['value']}")
         
+        # Combine all parts
+        combined_input = " ".join(input_parts)
         if attribute_text_parts:
-            enhanced_description = material_description + " " + " ".join(attribute_text_parts)
+            enhanced_description = combined_input + " " + " ".join(attribute_text_parts)
         else:
-            enhanced_description = material_description
+            enhanced_description = combined_input
         
         with st.spinner("🔄 Classifying material..."):
             results = classifier.predict_with_confidence([enhanced_description])
@@ -233,9 +271,10 @@ def render_combined_classification_tab():
         # MATERIAL INFO BANNER (Top Section)
         # ========================================================================
         
-        manufacturer = pdf_attributes.get('manufacturer', {}).get('value', 'N/A')
-        model = pdf_attributes.get('model', {}).get('value', 'N/A')
-        material = pdf_attributes.get('material', {}).get('value', 'N/A')
+        # Use user-provided values with fallback to PDF-extracted values
+        display_manufacturer = manufacturer_name if manufacturer_name.strip() else pdf_attributes.get('manufacturer', {}).get('value', 'N/A')
+        display_material_number = material_number if material_number.strip() else 'N/A'
+        display_mpn = manufacturer_part_number if manufacturer_part_number.strip() else 'N/A'
         
         st.markdown(f"""
         <div class="material-info-banner">
@@ -246,16 +285,16 @@ def render_combined_classification_tab():
                     <span style="color: #FFFFFF;">{material_description[:100]}{'...' if len(material_description) > 100 else ''}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" style="color: #FFFFFF;">Model/Type:</span>
-                    <span style="color: #FFFFFF;">{model}</span>
+                    <span class="info-label" style="color: #FFFFFF;">Material Number:</span>
+                    <span style="color: #FFFFFF;">{display_material_number}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" style="color: #FFFFFF;">Manufacturer:</span>
-                    <span style="color: #FFFFFF;">{manufacturer}</span>
+                    <span class="info-label" style="color: #FFFFFF;">Manufacturer Name:</span>
+                    <span style="color: #FFFFFF;">{display_manufacturer}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" style="color: #FFFFFF;">Material:</span>
-                    <span style="color: #FFFFFF;">{material}</span>
+                    <span class="info-label" style="color: #FFFFFF;">Manufacturer Part Number (MPN):</span>
+                    <span style="color: #FFFFFF;">{display_mpn}</span>
                 </div>
             </div>
         </div>

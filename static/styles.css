@@ -194,6 +194,177 @@
     opacity: 0.7 !important;
 }
 
+/* Text Input Fields - SAP Horizon Style (Matching SAP Fiori) */
+.stTextInput input {
+    border: 1px solid #89919A !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    background: #FFFFFF !important;
+    color: #32363A !important;
+    padding: 10px 12px !important;
+    font-weight: 400 !important;
+    transition: all 0.2s ease !important;
+}
+
+.stTextInput input:focus {
+    color: #32363A !important;
+    border: 2px solid #0070F2 !important;
+    box-shadow: 0 0 0 1px #0070F2 !important;
+    outline: none !important;
+}
+
+/* Text input placeholder - SAP style (dark gray, italic) */
+.stTextInput input::placeholder {
+    color: #6A6D70 !important;
+    opacity: 1 !important;
+    font-style: italic !important;
+    font-weight: 400 !important;
+}
+
+/* Text input labels - SAP Horizon */
+.stTextInput label {
+    color: #32363A !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    margin-bottom: 6px !important;
+}
+
+/* File Uploader - SAP Horizon - Aggressive Override */
+.stFileUploader,
+section[data-testid="stFileUploadDropzone"],
+div[data-testid="stFileUploader"],
+[data-testid="stFileUploader"] {
+    background: #F5F6F7 !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+}
+
+.stFileUploader > div,
+.stFileUploader > div > div {
+    background: #F5F6F7 !important;
+}
+
+.stFileUploader label,
+[data-testid="stFileUploader"] label {
+    color: #000000 !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+}
+
+/* Upload dropzone area - Multiple selectors for aggressive override */
+.stFileUploader section,
+.stFileUploader section[data-testid="stFileUploadDropzone"],
+section[data-testid="stFileUploadDropzone"],
+[data-testid="stFileUploadDropzone"],
+.stFileUploader div[role="button"],
+.stFileUploader [data-baseweb="file-uploader"] {
+    background: #FFFFFF !important;
+    border: 2px dashed #D9D9D9 !important;
+    border-radius: 8px !important;
+    padding: 32px 24px !important;
+    transition: all 0.3s ease !important;
+}
+
+.stFileUploader section:hover,
+section[data-testid="stFileUploadDropzone"]:hover,
+[data-testid="stFileUploadDropzone"]:hover {
+    border-color: #0070F2 !important;
+    border-style: solid !important;
+    background: #FAFAFA !important;
+}
+
+.stFileUploader [data-testid="stFileUploaderDropzone"],
+.stFileUploader [data-testid="stFileUploadDropzone"] {
+    background: transparent !important;
+}
+
+/* Upload icon styling - All SVG elements */
+.stFileUploader section svg,
+.stFileUploader svg,
+[data-testid="stFileUploadDropzone"] svg,
+section[data-testid="stFileUploadDropzone"] svg {
+    color: #0070F2 !important;
+    fill: #0070F2 !important;
+    stroke: #0070F2 !important;
+}
+
+/* Drag and drop text - All text elements */
+.stFileUploader section > div,
+.stFileUploader section div,
+.stFileUploader section p,
+section[data-testid="stFileUploadDropzone"] div,
+section[data-testid="stFileUploadDropzone"] p,
+[data-testid="stFileUploadDropzone"] div,
+[data-testid="stFileUploadDropzone"] p {
+    color: #000000 !important;
+}
+
+.stFileUploader section span,
+section[data-testid="stFileUploadDropzone"] span,
+[data-testid="stFileUploadDropzone"] span {
+    color: #000000 !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+
+/* File size and type limit text */
+.stFileUploader section small,
+.stFileUploader section div[class*="small"],
+section[data-testid="stFileUploadDropzone"] small,
+[data-testid="stFileUploadDropzone"] small {
+    color: #6C757D !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
+
+/* Browse files button - All button variations */
+.stFileUploader button,
+.stFileUploader button[kind="secondary"],
+section[data-testid="stFileUploadDropzone"] button,
+[data-testid="stFileUploadDropzone"] button,
+button[data-testid="stFileUploaderButton"],
+.stFileUploader [role="button"] {
+    background: #0070F2 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 10px 20px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+.stFileUploader button:hover,
+section[data-testid="stFileUploadDropzone"] button:hover,
+[data-testid="stFileUploadDropzone"] button:hover,
+button[data-testid="stFileUploaderButton"]:hover {
+    background: #0064D9 !important;
+    box-shadow: 0 2px 8px rgba(0, 112, 242, 0.3) !important;
+}
+
+.stFileUploader button:active,
+section[data-testid="stFileUploadDropzone"] button:active,
+[data-testid="stFileUploadDropzone"] button:active {
+    background: #0059BF !important;
+}
+
+/* Override any inline dark background styles */
+.stFileUploader section[style*="background"],
+section[data-testid="stFileUploadDropzone"][style*="background"] {
+    background: #FFFFFF !important;
+}
+
+/* Override text color in all nested elements */
+.stFileUploader * {
+    color: inherit !important;
+}
+
+.stFileUploader section * {
+    color: #000000 !important;
+}
+
 /* Success/Info/Error Messages - Sky Blue Background with Black Text */
 .stAlert.stSuccess, 
 div[data-testid="stAlert"].stSuccess,

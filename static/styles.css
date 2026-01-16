@@ -315,21 +315,26 @@ div[data-testid="stExpander"] details summary:hover svg {
     background-color: #2D3748 !important;
     border-radius: 4px !important;
     padding: 16px !important;
+    overflow: visible !important;
 }
 
 .stCodeBlock code {
     color: #E2E8F0 !important;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
+    word-break: break-word !important;
     display: block !important;
     padding: 0 !important;
-    overflow-x: auto !important;
+    overflow-x: visible !important;
+    overflow-wrap: break-word !important;
 }
 
 .stCodeBlock pre {
     margin: 0 !important;
     padding: 0 !important;
-    overflow-x: auto !important;
+    overflow-x: visible !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
 }
 
 /* Fix code element styling */
@@ -338,6 +343,9 @@ code {
     background-color: #2D3748 !important;
     padding: 2px 6px !important;
     border-radius: 3px !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
 }
 
 /* Attributes Table Styling - SAP Horizon */

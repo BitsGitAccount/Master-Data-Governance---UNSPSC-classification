@@ -318,8 +318,160 @@
       { "name": "Compliance", "value": "CE", "unit": null }
     ]
   }
+  },
+
+  {
+    "id": "UNSPSC_40170000",
+    "unspsc_code": "40170000",
+    "unspsc_title": "Pipe piping and pipe fittings",
+    "material_description": "Pipes, piping systems, and pipe fittings for conveying fluids and gases in industrial and commercial applications",
+    "additional_text": "Includes straight pipes and fittings such as elbows, tees, reducers, couplings, unions, caps, plugs, and flanges used in fluid transport systems.",
+    "labels": {
+      "unspsc_final": "40170000",
+      "attributes": [
+        { "name": "Nominal Pipe Size", "value": "1/8 – 48", "unit": "inch" },
+        { "name": "Pipe Length", "value": "6 – 12", "unit": "m" },
+        { "name": "Wall Thickness Schedule", "value": "SCH 10 – SCH 160", "unit": null },
+        { "name": "Material", "value": "Carbon Steel, Stainless Steel, PVC, CPVC, Ductile Iron", "unit": null },
+        { "name": "Connection Type", "value": "Threaded, Welded, Flanged, Socket-weld", "unit": null },
+        { "name": "Pressure Rating", "value": "PN 10 – PN 420", "unit": null },
+        { "name": "Operating Temperature", "value": "-50 to 600", "unit": "°C" },
+        { "name": "Standards", "value": "ASTM A106, ASTM A53, ASME B36.10, ASME B16.5", "unit": null }
+      ]
+    }
+  },
+
+    {
+    "id": "UNSPSC_40171600",
+    "unspsc_code": "40171600",
+    "unspsc_title": "Industrial pipe and piping",
+    "material_description": "Heavy-duty industrial piping systems for high-pressure and high-temperature services",
+    "additional_text": "Used in oil & gas, chemical processing, power plants, and industrial utilities.",
+    "labels": {
+      "unspsc_final": "40171600",
+      "attributes": [
+        { "name": "Nominal Pipe Size", "value": "1/2 – 48", "unit": "inch" },
+        { "name": "Wall Thickness Schedule", "value": "SCH 40 – SCH 160", "unit": null },
+        { "name": "Material Grade", "value": "ASTM A106 Gr.B, ASTM A53 Gr.B, Alloy Steel", "unit": null },
+        { "name": "Yield Strength", "value": 240, "unit": "MPa" },
+        { "name": "Tensile Strength", "value": 415, "unit": "MPa" },
+        { "name": "Maximum Operating Pressure", "value": 2500, "unit": "psi" },
+        { "name": "Connection Type", "value": "Butt-welded, Flanged", "unit": null },
+        { "name": "Design Code", "value": "ASME B31.3, ASME B31.1", "unit": null }
+      ]
+    }
+  },
+
+  {
+    "id": "UNSPSC_40174700",
+    "unspsc_code": "40174700",
+    "unspsc_title": "Pipe threaded flanges",
+    "material_description": "Threaded pipe flanges used for non-welded pipe connections",
+    "additional_text": "Female-threaded flanges for low to medium pressure applications.",
+    "labels": {
+      "unspsc_final": "40174700",
+      "attributes": [
+        { "name": "Nominal Size", "value": "1/2 – 24", "unit": "inch" },
+        { "name": "Thread Type", "value": "NPT", "unit": null },
+        { "name": "Pressure Class", "value": "ANSI 150 – 600", "unit": null },
+        { "name": "Material", "value": "ASTM A105, ASTM A182 F316, PVC", "unit": null },
+        { "name": "Flange Face Type", "value": "Raised Face, Flat Face", "unit": null },
+        { "name": "Standard", "value": "ASME B16.5, ASME B1.20.1", "unit": null }
+      ]
+    }
+  },
+
+  {
+    "id": "UNSPSC_40174712",
+    "unspsc_code": "40174712",
+    "unspsc_title": "Threading Pipe Tool Kit",
+    "material_description": "Manual or powered pipe threading tool kits for cutting pipe threads",
+    "additional_text": "Includes die heads, ratchets or electric threading machines for NPT threads.",
+    "labels": {
+      "unspsc_final": "40174712",
+      "attributes": [
+        { "name": "Thread Size Range", "value": "3/8 – 4", "unit": "inch" },
+        { "name": "Thread Standard", "value": "NPT", "unit": null },
+        { "name": "Drive Type", "value": "Manual, Electric", "unit": null },
+        { "name": "Motor Power", "value": "0.5 – 1.5", "unit": "hp" },
+        { "name": "Die Material", "value": "Hardened Alloy Steel", "unit": null },
+        { "name": "Operating Voltage", "value": "115 / 230", "unit": "V" }
+      ]
+    }
+  },
+
+  {
+    "id": "UNSPSC_40180000",
+    "unspsc_code": "40180000",
+    "unspsc_title": "Tubes tubing and tube fittings",
+    "material_description": "Metal and plastic tubing and tube fittings for fluid and gas transfer",
+    "additional_text": "Used in instrumentation, refrigeration, hydraulics, and pneumatics.",
+    "labels": {
+      "unspsc_final": "40180000",
+      "attributes": [
+        { "name": "Tube Outer Diameter", "value": "1/8 – 2", "unit": "inch" },
+        { "name": "Wall Thickness", "value": "0.5 – 3", "unit": "mm" },
+        { "name": "Material", "value": "Copper, Stainless Steel, Aluminum, PVC", "unit": null },
+        { "name": "Pressure Rating", "value": "50 – 6000", "unit": "psi" },
+        { "name": "Temperature Range", "value": "-200 to 260", "unit": "°C" },
+        { "name": "Connection Type", "value": "Compression, Brazed, Push-fit", "unit": null }
+      ]
+    }
+  },
+
+  {
+    "id": "UNSPSC_40181800",
+    "unspsc_code": "40181800",
+    "unspsc_title": "Welded steel tubes",
+    "material_description": "Welded carbon steel structural and mechanical tubing",
+    "additional_text": "Used for construction, machinery frames, and structural applications.",
+    "labels": {
+      "unspsc_final": "40181800",
+      "attributes": [
+        { "name": "Tube Shape", "value": "Round, Square, Rectangular", "unit": null },
+        { "name": "Outer Dimension", "value": "1 – 28", "unit": "inch" },
+        { "name": "Wall Thickness", "value": "3 – 25", "unit": "mm" },
+        { "name": "Material Standard", "value": "ASTM A500 Gr.B / Gr.C", "unit": null },
+        { "name": "Yield Strength", "value": 345, "unit": "MPa" },
+        { "name": "Application Type", "value": "Structural", "unit": null }
+      ]
+    }
+  },
+
+  {
+    "id": "UNSPSC_40183000",
+    "unspsc_code": "40183000",
+    "unspsc_title": "Rubber and plastic tubing",
+    "material_description": "Flexible tubing made from rubber or thermoplastic materials",
+    "additional_text": "Used for air, water, fuel, laboratory, and pneumatic applications.",
+    "labels": {
+      "unspsc_final": "40183000",
+      "attributes": [
+        { "name": "Inner Diameter", "value": "1/16 – 2", "unit": "inch" },
+        { "name": "Material", "value": "PVC, Polyurethane, Silicone, PTFE", "unit": null },
+        { "name": "Pressure Rating", "value": "20 – 1000", "unit": "psi" },
+        { "name": "Temperature Range", "value": "-60 to 260", "unit": "°C" },
+        { "name": "Flexibility", "value": "Flexible", "unit": null }
+      ]
+    }
+  },
+
+  {
+    "id": "UNSPSC_40183001",
+    "unspsc_code": "40183001",
+    "unspsc_title": "Rubber tubing",
+    "material_description": "Flexible tubing manufactured from elastomeric rubber materials",
+    "additional_text": "Commonly used for air, water, fuel, and industrial fluid transfer.",
+    "labels": {
+      "unspsc_final": "40183001",
+      "attributes": [
+        { "name": "Inner Diameter", "value": "1/8 – 2", "unit": "inch" },
+        { "name": "Material Type", "value": "Nitrile (NBR), EPDM, Natural Rubber", "unit": null },
+        { "name": "Hardness", "value": "60 – 70", "unit": "Shore A" },
+        { "name": "Maximum Pressure", "value": "300", "unit": "psi" },
+        { "name": "Temperature Range", "value": "-40 to 100", "unit": "°C" }
+      ]
+    }
   }
-
-
 
 ]

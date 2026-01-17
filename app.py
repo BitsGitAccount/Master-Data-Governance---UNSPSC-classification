@@ -29,6 +29,7 @@ import streamlit as st  # Web interface framework
 import pandas as pd      # Data manipulation and display
 import os               # File system operations
 from models.classifier import MaterialClassifier  # Our ML classification model
+from models.enhanced_classifier import EnhancedMaterialClassifier  # Enhanced classifier with similarity matching
 from models.pdf_extractor import PDFAttributeExtractor  # PDF attribute extraction
 import tempfile  # For handling temporary uploaded files
 import base64  # For encoding PDF to display in iframe
@@ -99,14 +100,27 @@ def display_pdf(pdf_path):
 
 @st.cache_resource
 def load_classifier():
-    """Load the trained ML classification model from disk"""
-    classifier = MaterialClassifier()
+    """Load the enhanced classification model"""
+    # Load base ML classifier
+    ml_classifier = MaterialClassifier()
     
     if os.path.exists('trained_models/classifier.pkl'):
-        classifier.load_model('trained_models')
-        return classifier
+        ml_classifier.load_model('trained_models')
+    else:
+        return None
     
-    return None
+    # Create enhanced classifier with similarity matching
+    enhanced_classifier = EnhancedMaterialClassifier()
+    enhanced_classifier.ml_classifier = ml_classifier
+    
+    # Load training data for similarity matching
+    try:
+        enhanced_classifier.load_training_data('data/mdg_multi_material_training_data_500.json')
+    except Exception as e:
+        st.warning(f"Could not load training data for similarity matching: {e}")
+        return ml_classifier  # Fall back to basic classifier
+    
+    return enhanced_classifier
 
 
 @st.cache_resource

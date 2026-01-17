@@ -8,6 +8,7 @@ SUPPORTED DATA FORMATS:
 """
 
 import pandas as pd
+import numpy as np
 import json
 from sklearn.model_selection import train_test_split
 from models.classifier import MaterialClassifier
@@ -48,27 +49,56 @@ def load_training_data(data_source='csv'):
         # Convert JSON to DataFrame format expected by classifier
         records = []
         for item in json_data:
-            # Build enhanced description from material description and characteristics
+            # Build enhanced description from material description and ALL attributes
             description_parts = [item['material_description']]
             
             # Add manufacturer and part number
             if item.get('manufacturer'):
                 description_parts.append(f"Manufacturer: {item['manufacturer']}")
             if item.get('manufacturer_part_number'):
-                description_parts.append(f"Part: {item['manufacturer_part_number']}")
+                description_parts.append(f"Part Number: {item['manufacturer_part_number']}")
             
-            # Add characteristics
-            if item.get('characteristics'):
+            # Add additional text if present
+            if item.get('additional_text'):
+                description_parts.append(item['additional_text'])
+            
+            # Add attributes from the labels section (NEW DATA FORMAT)
+            if item.get('labels') and item['labels'].get('attributes'):
+                for attr in item['labels']['attributes']:
+                    attr_name = attr.get('name', '')
+                    attr_value = attr.get('value')
+                    attr_unit = attr.get('unit', '')
+                    
+                    # Format attribute with value and unit
+                    if attr_value is not None:
+                        if isinstance(attr_value, bool):
+                            # Handle boolean attributes
+                            description_parts.append(f"{attr_name}: {attr_value}")
+                        elif attr_unit:
+                            description_parts.append(f"{attr_name}: {attr_value} {attr_unit}")
+                        else:
+                            description_parts.append(f"{attr_name}: {attr_value}")
+            
+            # Handle old characteristics format (for backward compatibility)
+            elif item.get('characteristics'):
                 for char_name, char_value in item['characteristics'].items():
                     # Format characteristic name (remove prefixes and convert to readable format)
                     clean_name = char_name.replace('AAD375002_', '').replace('BAH609003_', '').replace('BAJ196003_', '').replace('BAI188003_', '')
                     clean_name = clean_name.replace('_', ' ').title()
                     description_parts.append(f"{clean_name}: {char_value}")
             
-            records.append({
-                'Material_Description': ' '.join(description_parts),
-                'UNSPSC_Code': item['unspsc_class']
-            })
+            # Get UNSPSC code from labels or direct field
+            unspsc_code = None
+            if item.get('labels') and item['labels'].get('unspsc_final'):
+                unspsc_code = item['labels']['unspsc_final']
+            elif item.get('unspsc_class'):
+                unspsc_code = item['unspsc_class']
+            
+            if unspsc_code:
+                records.append({
+                    'Material_Description': ' '.join(description_parts),
+                    'UNSPSC_Code': unspsc_code
+                })
         
         df = pd.DataFrame(records)
         return df
@@ -114,11 +144,22 @@ def main():
     X = df['Material_Description'].values
     y = df['UNSPSC_Code'].values
     
-    # Split data
+    # Split data (remove stratify for small datasets)
     print("\nSplitting data into train (80%) and test (20%) sets...")
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=y
-    )
+    # Check if we have enough samples per class for stratification
+    unique_classes, class_counts = np.unique(y, return_counts=True)
+    min_class_count = min(class_counts)
+    
+    # Only stratify if each class has at least 2 samples
+    if min_class_count >= 2:
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42, stratify=y
+        )
+    else:
+        print(f"Warning: Some classes have only {min_class_count} sample(s). Using non-stratified split.")
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42
+        )
     
     print(f"Training samples: {len(X_train)}")
     print(f"Test samples: {len(X_test)}")

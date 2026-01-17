@@ -14,92 +14,230 @@ class PDFAttributeExtractor:
     def __init__(self):
         """
         Initialize extractor with comprehensive patterns for SAP MDG integration.
-        These characteristics map to standard SAP Material Master fields.
+        These patterns match the attributes in mdg_multi_material_training_data_500.json
         """
         self.patterns = {
-            # Technical Specifications
-            'max_flow': [
-                r'Max\.?\s*flow[:\s]+(\d+)\s*(m³?/h|m3/h|GPM|l/h|liters?/hour)',
-                r'Maximum\s+flow[:\s]+(\d+)\s*(m³?/h|m3/h|GPM|l/h)',
-                r'Flow\s+rate[:\s]+(\d+)\s*(m³?/h|m3/h|GPM|l/h)',
+            # Flow and Rate Specifications
+            'Rated Flow': [
+                r'Rated\s+[Ff]low[:\s]+(\d+\.?\d*)\s*(m³?/h|m3/h|cfm|CFM|L/min|l/min)',
+                r'Flow\s+[Rr]ate[:\s]+(\d+\.?\d*)\s*(m³?/h|m3/h|cfm|CFM|L/min|l/min)',
+                r'Max\.?\s*flow[:\s]+(\d+\.?\d*)\s*(m³?/h|m3/h|cfm|CFM|L/min|l/min)',
             ],
-            'max_pressure': [
-                r'Max\.?\s*(?:operating\s+)?pressure[:\s]+(\d+\.?\d*)\s*(bar|PSI|psi|kPa|MPa)',
-                r'Maximum\s+pressure[:\s]+(\d+\.?\d*)\s*(bar|PSI|psi|kPa|MPa)',
-                r'Operating\s+pressure[:\s]+(\d+\.?\d*)\s*(bar|PSI|psi|kPa|MPa)',
+            'Average Air Flow': [
+                r'Average\s+[Aa]ir\s+[Ff]low[:\s]+(\d+\.?\d*)\s*(cfm|CFM|m³?/h|m3/h)',
+                r'Air\s+[Ff]low[:\s]+(\d+\.?\d*)\s*(cfm|CFM|m³?/h|m3/h)',
             ],
-            'temperature_range': [
-                r'(?:Max\.?\s*)?(?:working|operating)\s+temperature[:\s]+(-?\d+)\s*(?:º|°)?C?\s+to\s+[+]?(\d+)\s*(?:º|°)?C',
-                r'Temperature\s+range[:\s]+(-?\d+)\s*(?:º|°)?C?\s+to\s+[+]?(\d+)\s*(?:º|°)?C',
-                r'Working\s+temp[:\s]+(-?\d+)\s*(?:º|°)?C?\s+to\s+[+]?(\d+)\s*(?:º|°)?C',
+            'Airflow Capacity': [
+                r'Airflow\s+[Cc]apacity[:\s]+(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)\s*(m³?/h|m3/h)',
+                r'Airflow[:\s]+(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)\s*(cfm|CFM)',
             ],
-            'max_speed': [
-                r'Max\.?\s*speed[:\s]+(\d+)\s*(rpm|RPM)',
-                r'Maximum\s+speed[:\s]+(\d+)\s*(rpm|RPM)',
-                r'Rotation\s+speed[:\s]+(\d+)\s*(rpm|RPM)',
+            'Free Air Flow Rate': [
+                r'Free\s+[Aa]ir\s+[Ff]low\s+[Rr]ate[:\s]+(\d+\.?\d*)\s*(cfm|CFM)',
+            ],
+            'Maximum Flow Rate': [
+                r'Maximum\s+[Ff]low\s+[Rr]ate[:\s]+(\d+\.?\d*)\s*(gpm|GPM|L/min|l/min)',
             ],
             
-            # Vendor/Manufacturer Information (for SAP Vendor Master)
+            # Pressure Specifications
+            'Working Pressure': [
+                r'Working\s+[Pp]ressure[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI|Pa|kPa|MPa)',
+            ],
+            'Maximum Working Pressure': [
+                r'Maximum\s+[Ww]orking\s+[Pp]ressure[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI|Pa|kPa|MPa)',
+                r'Max\.?\s+[Ww]orking\s+[Pp]ressure[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI)',
+            ],
+            'Maximum Pressure': [
+                r'Maximum\s+[Pp]ressure[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI|Pa|kPa|MPa)',
+                r'Max\.?\s*[Pp]ressure[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI)',
+            ],
+            'Maximum Operating Pressure': [
+                r'Maximum\s+[Oo]perating\s+[Pp]ressure[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI|Pa)',
+                r'Max\.?\s+[Oo]perating\s+[Pp]ressure[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI)',
+            ],
+            'Operating Pressure': [
+                r'Operating\s+[Pp]ressure[:\s]+(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)\s*(bar|BAR|psi|PSI)',
+            ],
+            'Bypass Setting': [
+                r'Bypass\s+[Ss]etting[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI)',
+            ],
+            'Burst Pressure': [
+                r'Burst\s+[Pp]ressure[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI)',
+            ],
+            'Maximum Discharge Pressure': [
+                r'Maximum\s+[Dd]ischarge\s+[Pp]ressure[:\s]+(\d+\.?\d*)\s*(bar|BAR|psi|PSI)',
+            ],
+            
+            # Temperature Specifications
+            'Maximum Inlet Air Temperature': [
+                r'Maximum\s+[Ii]nlet\s+[Aa]ir\s+[Tt]emperature[:\s]+(\d+\.?\d*)\s*(?:º|°)?C',
+                r'Max\.?\s+[Ii]nlet\s+[Tt]emp[:\s]+(\d+\.?\d*)\s*(?:º|°)?C',
+            ],
+            'Maximum Water Temperature': [
+                r'Maximum\s+[Ww]ater\s+[Tt]emperature[:\s]+(\d+\.?\d*)\s*(?:º|°)?C',
+            ],
+            'Maximum Liquid Temperature': [
+                r'Maximum\s+[Ll]iquid\s+[Tt]emperature[:\s]+(\d+\.?\d*)\s*(?:º|°)?C',
+            ],
+            'Maximum Ambient Temperature': [
+                r'Maximum\s+[Aa]mbient\s+[Tt]emperature[:\s]+(\d+\.?\d*)\s*(?:º|°)?C',
+            ],
+            'Maximum Fluid Temperature': [
+                r'Maximum\s+[Ff]luid\s+[Tt]emperature[:\s]+(\d+\.?\d*)\s*(?:º|°)?C',
+            ],
+            'Minimum Fluid Temperature': [
+                r'Minimum\s+[Ff]luid\s+[Tt]emperature[:\s]+(\d+\.?\d*)\s*(?:º|°)?C',
+            ],
+            'Operating Temperature': [
+                r'Operating\s+[Tt]emperature[:\s]+(-?\d+\.?\d*)\s+to\s+[+]?(\d+\.?\d*)\s*(?:º|°)?C',
+                r'Operating\s+[Tt]emp[:\s]+(-?\d+\.?\d*)\s+to\s+[+]?(\d+\.?\d*)\s*(?:º|°)?C',
+            ],
+            'Operating Temperature Range': [
+                r'Operating\s+[Tt]emperature\s+[Rr]ange[:\s]+(-?\d+\.?\d*)\s+to\s+[+]?(\d+\.?\d*)\s*(?:º|°)?C',
+            ],
+            
+            # Physical Properties
+            'Weight': [
+                r'Weight[:\s]+(\d+\.?\d*)\s*(kg|g|lb|lbs?|pounds?)',
+                r'Net\s+[Ww]eight[:\s]+(\d+\.?\d*)\s*(kg|g|lb|lbs?)',
+                r'Mass[:\s]+(\d+\.?\d*)\s*(kg|g)',
+                r'Typical\s+[Ww]eight[:\s]+(\d+\.?\d*)\s*(kg|g)',
+            ],
+            'Air Connection Size': [
+                r'Air\s+[Cc]onnection\s+[Ss]ize[:\s]+(\d+\.?\d*)\s*(inch|mm|cm)',
+            ],
+            'Pipe Connection Size': [
+                r'Pipe\s+[Cc]onnection\s+[Ss]ize[:\s]+(\d+\.?\d*)\s*(inch|mm)',
+            ],
+            'Suction Nozzle Size': [
+                r'Suction\s+[Nn]ozzle\s+[Ss]ize[:\s]+(DN\s*\d+)',
+            ],
+            'Discharge Nozzle Size': [
+                r'Discharge\s+[Nn]ozzle\s+[Ss]ize[:\s]+(DN\s*\d+)',
+            ],
+            
+            # Power and Electrical
+            'Motor Power': [
+                r'Motor\s+[Pp]ower[:\s]+(\d+\.?\d*)\s*(hp|HP|kW|W)',
+                r'Rated\s+[Mm]otor\s+[Pp]ower[:\s]+(\d+\.?\d*)\s*(hp|HP|kW|W)',
+            ],
+            'Output Power': [
+                r'Output\s+[Pp]ower[:\s]+(\d+\.?\d*)\s*(hp|HP|kW|W)',
+            ],
+            'Power Consumption': [
+                r'Power\s+[Cc]onsumption[:\s]+(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)\s*(W|kW)',
+            ],
+            'Supply Voltage': [
+                r'Supply\s+[Vv]oltage[:\s]+(\d+\.?\d*)\s*(V|VAC|VDC)',
+            ],
+            'Input Voltage': [
+                r'Input\s+[Vv]oltage[:\s]+(\d+\.?\d*)\s*(V|VAC)',
+            ],
+            'Motor Voltage': [
+                r'Motor\s+[Vv]oltage[:\s]+(\d+\.?\d*)\s*(V|VAC)',
+            ],
+            'Operating Voltage': [
+                r'Operating\s+[Vv]oltage[:\s]+(\d+\.?\d*)\s*(V|VAC)',
+            ],
+            'Motor Speed': [
+                r'Motor\s+[Ss]peed[:\s]+(\d+\.?\d*)\s*(rpm|RPM)',
+                r'Pump\s+[Ss]peed[:\s]+(\d+\.?\d*)\s*(rpm|RPM)',
+            ],
+            'Motor Frequency': [
+                r'Motor\s+[Ff]requency[:\s]+(\d+\.?\d*)\s*(Hz|hz)',
+            ],
+            'Current Draw': [
+                r'Current\s+[Dd]raw[:\s]+(\d+\.?\d*)\s*(A|amp|amps)',
+            ],
+            
+            # System Capacity
+            'System Capacity': [
+                r'System\s+[Cc]apacity[:\s]+(\d+\.?\d*)\s*(gallon|gal|L|liter)',
+            ],
+            'Tank Capacity': [
+                r'Tank\s+[Cc]apacity[:\s]+(\d+\.?\d*)\s*(L|liter|gallon|gal)',
+            ],
+            'Tank Size': [
+                r'Tank\s+[Ss]ize[:\s]+(\d+\.?\d*)\s*(gallon|gal|L|liter)',
+            ],
+            
+            # Performance Specifications
+            'Maximum Head': [
+                r'Maximum\s+[Hh]ead[:\s]+(\d+\.?\d*)\s*(ft|m|meter)',
+            ],
+            'Rated Head': [
+                r'Rated\s+[Hh]ead[:\s]+(\d+\.?\d*)\s*(m|meter)',
+            ],
+            'Shut-Off Head': [
+                r'Shut-?[Oo]ff\s+[Hh]ead[:\s]+(\d+\.?\d*)\s*(m|meter)',
+            ],
+            'Pump Efficiency': [
+                r'Pump\s+[Ee]fficiency[:\s]+(\d+\.?\d*)\s*%',
+            ],
+            'NPSH Required': [
+                r'NPSH\s+[Rr]equired[:\s]+(\d+\.?\d*)\s*(m|meter)',
+            ],
+            'Maximum Suction Lift': [
+                r'Maximum\s+[Ss]uction\s+[Ll]ift[:\s]+(\d+\.?\d*)\s*(m|meter)',
+            ],
+            'Sound Level': [
+                r'Sound\s+[Ll]evel[:\s]+(\d+\.?\d*)\s*(dBA|dB)',
+                r'Noise\s+[Ll]evel[:\s]+(\d+\.?\d*)\s*(dBA|dB)',
+            ],
+            
+            # Material and Construction
+            'Pump Type': [
+                r'Pump\s+[Tt]ype[:\s]+([A-Za-z\s\-]+?)(?:\n|$|,)',
+            ],
+            'Connector Type': [
+                r'Connector\s+[Tt]ype[:\s]+([A-Za-z\s\-]+?)(?:\n|$|,)',
+            ],
+            'Casing Material': [
+                r'Casing\s+[Mm]aterial[:\s]+([A-Za-z0-9\s\-/]+?)(?:\n|$)',
+            ],
+            'Impeller Material': [
+                r'Impeller\s+[Mm]aterial[:\s]+([A-Za-z0-9\s\-/]+?)(?:\n|$)',
+            ],
+            'Shaft Material': [
+                r'Shaft\s+[Mm]aterial[:\s]+([A-Za-z0-9\s\-]+?)(?:\n|$)',
+            ],
+            'Insulator Material': [
+                r'Insulator\s+[Mm]aterial[:\s]+([A-Za-z0-9\s\-]+?)(?:\n|$)',
+            ],
+            
+            # Manufacturer Information
             'manufacturer': [
-                r'(INOXPA|GRUNDFOS|KSB|WILO|Pentair|Xylem|Sulzer|Flowserve|ITT|Ebara)\s+S\.?A\.?U?\.?',
-                r'Manufacturer[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|FT)',
+                r'Manufacturer[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|$)',
                 r'Made\s+by[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|$)',
-                r'Company[:\s]+([A-Z][A-Za-z\s&,\.]+?)(?:\n|$)',
             ],
             
-            # Material Identification (for SAP Material Master)
-            'model': [
-                r'(DIN-FOOD|[A-Z]{2,}-[A-Z0-9\-]+)',
-                r'Model[:\s]+([A-Z0-9\-]+)',
-                r'Type[:\s]+([A-Z0-9\-]+)',
-                r'Series[:\s]+([A-Z0-9\-]+)',
+            # Certifications and Standards
+            'UL Certification': [
+                r'(UL\s*\d+\s*[Ll]isted)',
+                r'UL\s+[Cc]ertification[:\s]+(UL\s*\d+)',
             ],
-            'material': [
-                r'Materials?\s+(?:in\s+contact[:\s]+)?([0-9\.]+\s*\([A-Z]+\s+[0-9A-Z]+\))',
-                r'Construction[:\s]+([0-9\.]+\s*\([A-Z]+\s+[0-9A-Z]+\))',
-                r'Body\s+material[:\s]+([A-Z]+\s+[0-9A-Z]+)',
-                r'(1\.4404|AISI\s+316L?|Stainless\s+steel)',
+            'Certification': [
+                r'Certification[:\s]+([A-Z0-9\s,]+?)(?:\n|$)',
+                r'(CE|ETL|ISO\s+\d+|FDA|ATEX|EHEDG|RoHS)',
             ],
-            
-            # Physical Characteristics (for SAP Material Master - Basic Data)
-            'weight': [
-                r'Weight[:\s]+(\d+\.?\d*)\s*(kg|g|lbs?|pounds?)',
-                r'Mass[:\s]+(\d+\.?\d*)\s*(kg|g|lbs?|pounds?)',
-                r'Net\s+weight[:\s]+(\d+\.?\d*)\s*(kg|g|lbs?|pounds?)',
-            ],
-            'dimensions': [
-                r'Dimensions?[:\s]+(\d+\.?\d*)\s*(?:cm|mm|m|x)\s*[xX×]\s*(\d+\.?\d*)\s*(?:cm|mm|m|x)\s*[xX×]\s*(\d+\.?\d*)\s*(?:cm|mm|m)',
-                r'Size[:\s]+(\d+\.?\d*)\s*[xX×]\s*(\d+\.?\d*)\s*[xX×]\s*(\d+\.?\d*)',
+            'Compliance': [
+                r'Compliance[:\s]+([A-Za-z0-9\s,]+?)(?:\n|$)',
             ],
             
-            # Procurement/Purchasing Data (for SAP Material Master - Purchasing)
-            'lead_time': [
-                r'Lead\s+time[:\s]+(\d+)\s*(days?|weeks?|months?)',
-                r'Delivery\s+time[:\s]+(\d+)\s*(days?|weeks?)',
+            # Additional Specifications
+            'Contact Pitch': [
+                r'Contact\s+[Pp]itch[:\s]+(\d+\.?\d*)\s*(mm|cm)',
             ],
-            
-            # Classification Data (for SAP)
-            'product_type': [
-                r'Product\s+type[:\s]+([A-Za-z\s]+)',
-                r'Category[:\s]+([A-Za-z\s]+)',
-                r'Type[:\s]+(Pump|Valve|Motor|Sensor|Controller)',
+            'Number of Contacts': [
+                r'Number\s+of\s+[Cc]ontacts[:\s]+(\d+)',
             ],
-            
-            # Quality/Compliance (for SAP QM)
-            'certification': [
-                r'(CE|ISO\s+\d+|FDA|ATEX|EHEDG)',
-                r'Certified[:\s]+([A-Z\s,]+)',
-                r'Standards?[:\s]+([A-Z0-9\s,\-]+)',
+            'Maximum Data Transfer Rate': [
+                r'Maximum\s+[Dd]ata\s+[Tt]ransfer\s+[Rr]ate[:\s]+(\d+\.?\d*)\s*(Gbit/s|Gbps)',
             ],
-            
-            # Additional Technical Data
-            'power': [
-                r'Power[:\s]+(\d+\.?\d*)\s*(kW|W|HP)',
-                r'Motor\s+power[:\s]+(\d+\.?\d*)\s*(kW|W|HP)',
+            'Filtration Efficiency': [
+                r'Filtration\s+[Ee]fficiency[:\s]+(\d+\.?\d*)\s*%',
             ],
-            'voltage': [
-                r'Voltage[:\s]+(\d+)\s*(V|VAC|VDC)',
-                r'Supply[:\s]+(\d+)\s*(V|VAC)',
+            'Particle Size Rating': [
+                r'Particle\s+[Ss]ize\s+[Rr]ating[:\s]+(\d+\.?\d*)\s*(µm|micron)',
             ],
         }
     

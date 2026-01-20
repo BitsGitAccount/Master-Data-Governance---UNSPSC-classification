@@ -196,8 +196,7 @@
 
 /* Text Input Fields - SAP Horizon Style (Matching SAP Fiori) */
 .stTextInput input {
-    border: 1px solid #89919A !important;
-    border-radius: 4px !important;
+    border-radius: 2px !important;
     font-size: 14px !important;
     background: #FFFFFF !important;
     color: #32363A !important;
@@ -208,9 +207,9 @@
 
 .stTextInput input:focus {
     color: #32363A !important;
-    border: 2px solid #0070F2 !important;
-    box-shadow: 0 0 0 1px #0070F2 !important;
-    outline: none !important;
+    /* border: 2px solid #107E3E !important; */
+    box-shadow: 0 0 0 1px #107E3E !important;
+    /* outline: none !important; */
 }
 
 /* Text input placeholder - SAP style (dark gray, italic) */

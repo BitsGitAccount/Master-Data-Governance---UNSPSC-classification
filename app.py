@@ -148,10 +148,6 @@ def render_combined_classification_tab():
     # Inject custom CSS
     inject_custom_css()
     
-    # === HEADER SECTION ===
-    st.markdown('<h2 style="color: #000000; margin-top: 10px; margin-bottom: 4px;">Material UNSPSC Classification System</h2>', unsafe_allow_html=True)
-    st.markdown('<p style="color: #000000; font-size: 14px; margin-bottom: 12px;"><strong>SAP Master Data Governance</strong> | Automated classification using material descriptions and Technical Data Sheets</p>', unsafe_allow_html=True)
-    
     # === LOAD ML MODELS ===
     classifier = load_classifier()
     extractor = load_pdf_extractor()
@@ -160,7 +156,6 @@ def render_combined_classification_tab():
         st.error(" Model not found. Please train the model first by running: `python train_model.py`")
         return
     
-    st.success(" Models loaded successfully")
     
     # ========================================================================
     # INPUT SECTION

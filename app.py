@@ -325,7 +325,6 @@ def render_combined_classification_tab():
             # CLASSIFICATION DETAILS SECTION
             # ================================================================
             
-            st.markdown('<div class="classification-section">', unsafe_allow_html=True)
             st.markdown('<div class="section-title">■ Classification Details</div>', unsafe_allow_html=True)
             
             # UNSPSC Selection with Top 5 Predictions

@@ -2,7 +2,7 @@
   {
     "id": "MAT_200001",
     "material_description": "Compressed Air Filter Model 95",
-    "manufacturer": "UT",
+    "manufacturer": "FSN Original Spare Parts",
     "manufacturer_part_number": "MODEL_95",
     "additional_text": "Compressed air filter for industrial applications with oil separation and particulate filtration, compliant with ISO 8573-1.",
     "labels": {
@@ -16,7 +16,8 @@
         { "name": "Air Connection Size", "value": 1.5, "unit": "inch", "normalized_value": 1.5, "normalized_unit": "inch" },
         { "name": "Remaining Oil Content After Filtration", "value": 0.01, "unit": "mg/m3", "normalized_value": 0.01, "normalized_unit": "mg/m3" }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/Air filters 1-40161505.pdf"
   },
 
   {
@@ -35,13 +36,14 @@
         { "name": "Supply Voltage", "value": 115, "unit": "V", "normalized_value": 115, "normalized_unit": "V" },
         { "name": "UL Certification", "value": "UL1450 Listed", "unit": null, "normalized_value": "UL1450", "normalized_unit": null }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/Air compressors 1-40151601.pdf"
   },
 
   {
     "id": "MAT_200003",
     "material_description": "Stationary electric air compressor with vertical tank",
-    "manufacturer": "Speedaire",
+    "manufacturer": "Grainger",
     "manufacturer_part_number": "4ME97",
     "additional_text": "Splash-lubricated stationary electric air compressor with 60-gallon vertical tank.",
     "labels": {
@@ -53,11 +55,10 @@
         { "name": "Tank Size", "value": 60, "unit": "gallon", "normalized_value": 227, "normalized_unit": "liter" },
         { "name": "Input Voltage", "value": 230, "unit": "V", "normalized_value": 230, "normalized_unit": "V" },
         { "name": "Motor Speed", "value": 950, "unit": "rpm", "normalized_value": 950, "normalized_unit": "rpm" },
-        { "name": "Sound Level", "value": 85, "unit": "dBA", "normalized_value": 85, "normalized_unit": "dBA" },
-        { "name": "Lubrication Type", "value": "Splash Lubricated", "unit": null, "normalized_value": "Splash Lubricated", "normalized_unit": null },
-        { "name": "UL Certification", "value": "UL1450 Listed", "unit": null, "normalized_value": "UL1450", "normalized_unit": null }
+        { "name": "Sound Level", "value": 85, "unit": "dBA", "normalized_value": 85, "normalized_unit": "dBA" }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/Air compressors 2-40151601.pdf"
   },
 
   {
@@ -70,59 +71,50 @@
       "unspsc_final": "40151506",
       "attributes": [
         { "name": "Tank Capacity", "value": 16, "unit": "L", "normalized_value": 0.016, "normalized_unit": "m3" },
-        { "name": "Quantity Delivered per Cycle", "value": 220, "unit": "g", "normalized_value": 0.22, "normalized_unit": "kg" },
+        { "name": "Quantity Delivered per Cycle of lever", "value": 220, "unit": "g", "normalized_value": 0.22, "normalized_unit": "kg" },
         { "name": "Maximum Oil Density", "value": 240, "unit": "SAE", "normalized_value": 240, "normalized_unit": "SAE" },
         { "name": "Delivery Hose Length", "value": 2, "unit": "m", "normalized_value": 2, "normalized_unit": "m" },
-        { "name": "Weight", "value": 10.6, "unit": "kg", "normalized_value": 10.6, "normalized_unit": "kg" },
-        { "name": "Pump Type", "value": "Double-Acting Manual Pump", "unit": null, "normalized_value": "Double-Acting", "normalized_unit": null }
+        { "name": "Weight", "value": 10.6, "unit": "kg", "normalized_value": 10.6, "normalized_unit": "kg" }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/HandPump-40151506.pdf"
   },
 
+[
   {
     "id": "MAT_200005",
     "material_description": "Self-priming centrifugal irrigation pump",
     "manufacturer": "Goulds Water Technology",
     "manufacturer_part_number": "GT15",
-    "additional_text": "Self-priming centrifugal pump for irrigation and water transfer applications.",
     "labels": {
       "unspsc_final": "40151507",
       "attributes": [
-        { "name": "Pump Type", "value": "Self-Priming Centrifugal Pump", "unit": null },
-        { "name": "Maximum Flow Rate", "value": 110, "unit": "gpm", "normalized_value": 0.00694, "normalized_unit": "m3/s" },
-        { "name": "Maximum Head", "value": 128, "unit": "ft", "normalized_value": 39.0, "normalized_unit": "m" },
-        { "name": "Maximum Working Pressure", "value": 125, "unit": "psi", "normalized_value": 861843, "normalized_unit": "Pa" },
-        { "name": "Maximum Water Temperature", "value": 60, "unit": "°C", "normalized_value": 333.15, "normalized_unit": "K" },
-        { "name": "Motor Speed", "value": 3500, "unit": "rpm" },
-        { "name": "Rated Motor Power", "value": 1.5, "unit": "hp", "normalized_value": 1119, "normalized_unit": "W" },
-        { "name": "Pipe Connection Size", "value": 1.5, "unit": "inch" }
+        { "name": "Pump Type", "value": "Self-Priming Centrifugal Pump" },
+        { "name": "Motor Speed", "value": "3500 rpm", "normalized_value": 3500, "normalized_unit": "rpm" },
+        { "name": "Maximum Flow Rate", "value": "110 GPM", "normalized_value": 0.00694, "normalized_unit": "m3/s" },
+        { "name": "Maximum Liquid Temperature", "value": "60°C", "normalized_value": 333.15, "normalized_unit": "K" }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/IrrigationPump-40151507.pdf"
   },
-
   {
     "id": "MAT_200006",
     "material_description": "Centrifugal single-impeller irrigation pump",
-    "manufacturer": "Generic / Industrial",
+    "manufacturer": "Speroni Water Pumps",
     "manufacturer_part_number": "309CBM150",
-    "additional_text": "Low-head centrifugal pump for continuous-duty irrigation systems.",
     "labels": {
       "unspsc_final": "40151507",
       "attributes": [
-        { "name": "Pump Type", "value": "Centrifugal Single Impeller", "unit": null },
-        { "name": "Maximum Liquid Temperature", "value": 90, "unit": "°C", "normalized_value": 363.15, "normalized_unit": "K" },
-        { "name": "Maximum Ambient Temperature", "value": 40, "unit": "°C", "normalized_value": 313.15, "normalized_unit": "K" },
-        { "name": "Maximum Suction Lift", "value": 7, "unit": "m" },
-        { "name": "Motor Speed", "value": 2850, "unit": "rpm" },
-        { "name": "Motor Protection Class", "value": "IP44", "unit": null },
-        { "name": "Insulation Class", "value": "Class F", "unit": null },
-        { "name": "Pump Body Material", "value": "Cast Iron", "unit": null },
-        { "name": "Shaft Material", "value": "Stainless Steel AISI 304", "unit": null },
-        { "name": "Mechanical Seal Material", "value": "Ceramic/Graphite/NBR", "unit": null },
-        { "name": "Duty Type", "value": "Continuous", "unit": null }
+        { "name": "Pump Type", "value": "Centrifugal Single Impeller" },
+        { "name": "Motor Speed", "value": "2850 rpm", "normalized_value": 2850, "normalized_unit": "rpm" },
+        { "name": "Maximum Flow Rate", "value": "N/A", "normalized_value": null, "normalized_unit": null },
+        { "name": "Maximum Liquid Temperature", "value": "90°C", "normalized_value": 363.15, "normalized_unit": "K" }
       ]
-    }
-  },
+    },
+    "documentation": "data/all_category_pdf/IrrigationPump2-40151507.pdf"
+  }
+]
+
 
   {
     "id": "MAT_200007",
@@ -133,18 +125,16 @@
     "labels": {
       "unspsc_final": "40161504",
       "attributes": [
-        { "name": "Application", "value": "Compressor Protection", "unit": null },
         { "name": "Media Type", "value": "High-Efficiency Cellulose", "unit": null },
         { "name": "Media Area", "value": 0.25, "unit": "m2" },
         { "name": "Rated Flow", "value": 40, "unit": "L/min", "normalized_value": 0.000667, "normalized_unit": "m3/s" },
         { "name": "Bypass Setting", "value": 2.5, "unit": "bar", "normalized_value": 250000, "normalized_unit": "Pa" },
         { "name": "Maximum Operating Pressure", "value": 14, "unit": "bar", "normalized_value": 1400000, "normalized_unit": "Pa" },
         { "name": "Burst Pressure", "value": 24, "unit": "bar", "normalized_value": 2400000, "normalized_unit": "Pa" },
-        { "name": "Anti Drain Back Valve", "value": true, "unit": null },
-        { "name": "Gasket Shape", "value": "Rectangular", "unit": null },
         { "name": "Typical Weight", "value": 0.7, "unit": "kg" }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/OilFilters-40161504.pdf"
   },
 
   {
@@ -158,15 +148,10 @@
       "attributes": [
         { "name": "Connector Type", "value": "Board-to-Board SMT Connector", "unit": null },
         { "name": "Number of Contacts", "value": 440, "unit": null },
-        { "name": "Contact Pitch", "value": 0.5, "unit": "mm", "normalized_value": 0.0005, "normalized_unit": "m" },
-        { "name": "Board-to-Board Distance", "value": 5, "unit": "mm", "normalized_value": 0.005, "normalized_unit": "m" },
-        { "name": "Termination Technology", "value": "SMT", "unit": null },
         { "name": "Maximum Data Transfer Rate", "value": 16, "unit": "Gbit/s", "normalized_value": 16000000000, "normalized_unit": "bit/s" },
         { "name": "Operating Voltage", "value": 50, "unit": "VAC", "normalized_value": 50, "normalized_unit": "V" },
-        { "name": "Operating Current", "value": 0.5, "unit": "A" },
-        { "name": "Operating Temperature Range", "value": "-40 to +125", "unit": "°C" },
-        { "name": "Insulator Material", "value": "LCP UL94 V-0", "unit": null },
-        { "name": "Compliance", "value": "RoHS Compliant", "unit": null }
+        { "name": "Operating Current", "value": 0.5, "unit": "A" , "normalized_value": 0.5, "normalized_unit": "A" },
+        { "name": "Max Operating Temperature Range", "value": "125", "unit": "°C" , "normalized_value": 398.15, "normalized_unit": "K" },
       ]
     }
   },
@@ -177,15 +162,15 @@
     "labels": {
       "unspsc_final": "40161608",
       "attributes": [
-        { "name": "Sterilization Technology", "value": "UV-C (254 nm), HEPA Filtration", "unit": null },
-        { "name": "Airflow Capacity", "value": "40 - 380", "unit": "m3/h" },
-        { "name": "Power Supply", "value": "220–240 V AC, 50/60 Hz", "unit": null },
-        { "name": "Power Consumption", "value": "25 - 380", "unit": "W" },
-        { "name": "Noise Level", "value": "27 - 60", "unit": "dB" },
-        { "name": "Operating Temperature", "value": "0 to +35", "unit": "°C" },
+        { "name": "Airflow Capacity (Max)", "value": 380, "unit": "m3/h", "normalized_value": 0.38, "normalized_unit": "m3/s" },
+        { "name": "Power Supply", "value": "240", "unit": "V", "normalized_value": 240, "normalized_unit": "V" },
+        { "name": "Power Consumption (Max)", "value": 380, "unit": "W", "normalized_value": 380, "normalized_unit": "W" },
+        { "name": "Noise Level (Max)", "value": 60, "unit": "dB", "normalized_value": 60, "normalized_unit": "dB" },
+        { "name": "Operating Temperature (Max)", "value": 35, "unit": "°C", "normalized_value": 35, "normalized_unit": "°C" },
         { "name": "Protection Class", "value": "IP20", "unit": null }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/Air_sterilizers-40161608.pdf"
   },
 
   {
@@ -197,16 +182,16 @@
     "labels": {
       "unspsc_final": "40161602",
       "attributes": [
-        { "name": "Airflow", "value": "270 - 750", "unit": "cfm" },
-        { "name": "Filtration Efficiency", "value": 99.97, "unit": "%" },
-        { "name": "Particle Size Rating", "value": 0.3, "unit": "µm" },
+        { "name": "Airflow (Max)", "value": 750, "unit": "cfm", "normalized_value": 0.353, "normalized_unit": "m³/s" },
+        { "name": "Filtration Efficiency", "value": 99.97, "unit": "%", "normalized_value": 0.9997, "normalized_unit": "" },
+        { "name": "Particle Size Rating", "value": 0.3, "unit": "µm", "normalized_value": 0.0003, "normalized_unit": "m" },
         { "name": "Power Supply", "value": "115 V, 60 Hz", "unit": null },
-        { "name": "Current Draw", "value": 2.5, "unit": "A" },
-        { "name": "Sound Level", "value": 65, "unit": "dBA" },
-        { "name": "Weight", "value": 39.6, "unit": "lb" },
-        { "name": "Certification", "value": "ETL", "unit": null }
+        { "name": "Current Draw", "value": 2.5, "unit": "A", "normalized_value": 2.5, "normalized_unit": "A" },
+        { "name": "Sound Level", "value": 65, "unit": "dBA", "normalized_value": 65, "normalized_unit": "dBA" },
+        { "name": "Weight", "value": 39.6, "unit": "lb", "normalized_value": 17.96, "normalized_unit": "kg" }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/AirCleansers-40161602.pdf"
   },
 
   {
@@ -216,11 +201,14 @@
       "unspsc_final": "40161800",
       "attributes": [
         { "name": "Media Type", "value": "Activated Carbon, Membrane, Fiber, Sand, Paper", "unit": null },
-        { "name": "Filtration Rating", "value": "0.1 - 100", "unit": "micron" },
-        { "name": "Operating Temperature", "value": "-10 to +80", "unit": "°C" },
+        { "name": "Maximum Filtration Rating", "value": 100, "unit": "micron", "normalized_value": 0.0001, "normalized_unit": "m" },
+        { "name": "Minimum Filtration Rating", "value": 0.1, "unit": "micron", "normalized_value": 0.0000001, "normalized_unit": "m" },
+        { "name": "Operating Temperature (Max)", "value": 80, "unit": "°C", "normalized_value": 80, "normalized_unit": "°C" },
+        { "name": "Operating Temperature (Min)", "value": -10, "unit": "°C", "normalized_value": -10, "normalized_unit": "°C" },
         { "name": "Form Factor", "value": "Cartridge, Sheet, Roll, Granules", "unit": null }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/FilterMedia-40161800.pdf"
   },
 
   {
@@ -230,61 +218,34 @@
       "unspsc_final": "40161609",
       "attributes": [
         { "name": "Purification Technology", "value": "RO, UV, Activated Carbon, Sediment Filtration", "unit": null },
-        { "name": "Flow Rate", "value": "10 - 5000", "unit": "L/h" },
-        { "name": "Operating Pressure", "value": "1 - 6", "unit": "bar" },
-        { "name": "Power Supply", "value": "220–240 V AC, 50/60 Hz", "unit": null },
-        { "name": "Operating Temperature", "value": "5 to +45", "unit": "°C" }
+        { "name": "Max Flow Rate", "value": "5000", "unit": "L/h" , "normalized_value": 0.00139, "normalized_unit": "m3/s" },
+        { "name": "TDS Reduction", "value": "95", "unit": "%" , "normalized_value": 0.95, "normalized_unit": "" },
+        { "name": "Max Operating Pressure", "value": "6", "unit": "bar" , "normalized_value": 600000, "normalized_unit": "Pa" },
+        { "name": "Max Water Temperature Range", "value": "45", "unit": "°C", "normalized_value": 318.15, "normalized_unit": "K" },
+        { "name": "Max Operating Temperature", "value": "45", "unit": "°C", "normalized_value": 318.15, "normalized_unit": "K" }
       ]
-    }
+    },
+    "documentation": "data/all_category_pdf/Water_Purification_System-40161609.pdf"
   },
 
   {
-  "id": "MAT_200009",
-  "material_description": "Horizontal close-coupled centrifugal pump Etabloc 050-032-160 GG",
-  "manufacturer": "KSB",
-  "manufacturer_part_number": "ETB 050-032-160-GGSBV11 WS2CD2HHB",
-  "additional_text": "Single-stage close-coupled centrifugal pump for clean water applications, compliant with EN 733, supplied with IE3 electric motor.",
-  "labels": {
-    "unspsc_final": "40151700",
-    "attributes": [
-      { "name": "Pump Type", "value": "Centrifugal Close-Coupled Pump", "unit": null },
-      { "name": "Pump Standard", "value": "EN 733", "unit": null },
-      { "name": "Fluid Type", "value": "Clean Water", "unit": null },
-      { "name": "Rated Flow Rate", "value": 25.55, "unit": "m3/h", "normalized_value": 0.0071, "normalized_unit": "m3/s" },
-      { "name": "Minimum Permissible Flow Rate", "value": 3.934, "unit": "m3/h", "normalized_value": 0.00109, "normalized_unit": "m3/s" },
-      { "name": "Rated Head", "value": 24.52, "unit": "m" },
-      { "name": "Shut-Off Head", "value": 29.72, "unit": "m" },
-      { "name": "Pump Efficiency", "value": 61.81, "unit": "%" },
-      { "name": "Minimum Efficiency Index", "value": 0.5, "unit": null },
-      { "name": "NPSH Required", "value": 4.12, "unit": "m" },
-      { "name": "Maximum Power Input at Duty Point", "value": 2.757, "unit": "kW" },
-      { "name": "Maximum Power Input (Curve)", "value": 3.083, "unit": "kW" },
-      { "name": "Pump Speed", "value": 2918, "unit": "rpm" },
-      { "name": "Maximum Discharge Pressure", "value": 2.909, "unit": "bar", "normalized_value": 290900, "normalized_unit": "Pa" },
-      { "name": "Maximum Fluid Temperature", "value": 60, "unit": "°C" },
-      { "name": "Minimum Fluid Temperature", "value": 0, "unit": "°C" },
-      { "name": "Impeller Type", "value": "Radial Closed Multi-Channel", "unit": null },
-      { "name": "Impeller Diameter", "value": 149, "unit": "mm" },
-      { "name": "Free Passage", "value": 5.8, "unit": "mm" },
-      { "name": "Suction Nozzle Size", "value": "DN 50", "unit": null },
-      { "name": "Discharge Nozzle Size", "value": "DN 32", "unit": null },
-      { "name": "Nominal Pressure Rating", "value": "PN 16", "unit": null },
-      { "name": "Shaft Orientation", "value": "Horizontal", "unit": null },
-      { "name": "Casing Material", "value": "EN-GJL-250 / A48 CL 35B", "unit": null },
-      { "name": "Impeller Material", "value": "EN-GJL-250 / A48 CL 35B", "unit": null },
-      { "name": "Shaft Material", "value": "C45+N", "unit": null },
-      { "name": "Mechanical Seal Type", "value": "Single Mechanical Seal, API Plan 03", "unit": null },
-      { "name": "Motor Rated Power", "value": 3, "unit": "kW" },
-      { "name": "Motor Efficiency Class", "value": "IE3", "unit": null },
-      { "name": "Motor Speed", "value": 2910, "unit": "rpm" },
-      { "name": "Motor Voltage", "value": 400, "unit": "V" },
-      { "name": "Motor Frequency", "value": 50, "unit": "Hz" },
-      { "name": "Motor Enclosure Class", "value": "IP55", "unit": null },
-      { "name": "Motor Insulation Class", "value": "Class F", "unit": null },
-      { "name": "Total Pump Set Weight", "value": 60.5, "unit": "kg" },
-      { "name": "Compliance", "value": "CE", "unit": null }
-    ]
-  }
+    "id": "MAT_200009",
+    "material_description": "Horizontal close-coupled centrifugal pump Etabloc 050-032-160 GG",
+    "manufacturer": "KSB",
+    "manufacturer_part_number": "ETB 050-032-160-GGSBV11 WS2CD2HHB",
+    "additional_text": "Single-stage close-coupled centrifugal pump for clean water applications",
+    "labels": {
+      "unspsc_final": "40151700",
+      "attributes": [
+        { "name": "Pump Type", "value": "Centrifugal Close-Coupled Pump" },
+        { "name": "Shaft Orientation", "value": "Horizontal" },
+        { "name": "Fluid Type", "value": "Clean Water" },
+        { "name": "Rated Flow Rate", "value": 25.55, "unit": "m3/h", "normalized_value": 0.0071, "normalized_unit": "m3/s" },
+        { "name": "Rated Head", "value": 24.52, "unit": "m", "normalized_value": 24.52, "normalized_unit": "m" },
+        { "name": "Motor Speed", "value": 2900, "unit": "rpm", "normalized_value": 2900, "normalized_unit": "rpm" },
+        { "name": "Motor Rated Power", "value": 3, "unit": "kW" , "normalized_value": 3000, "normalized_unit": "W" }
+      ]
+    }
   },
 
   {
@@ -296,28 +257,14 @@
   "labels": {
     "unspsc_final": "40151607",
     "attributes": [
-      { "name": "Compressor Type", "value": "Scroll Compressor", "unit": null },
-      { "name": "Series", "value": "ZB Series", "unit": null },
-      { "name": "Application Temperature Range", "value": "Medium and High Temperature Refrigeration", "unit": null },
-      { "name": "Rated Power Range", "value": "2 - 15", "unit": "HP" },
-      { "name": "Operating Frequency", "value": "50 / 60", "unit": "Hz" },
-      { "name": "Motor Speed (50 Hz)", "value": 2900, "unit": "rpm" },
+      { "name": "max Rated Power Range", "value": "15", "unit": "HP" },
+      { "name": "Operating Frequency", "value": "60", "unit": "Hz" },
       { "name": "Motor Speed (60 Hz)", "value": 3500, "unit": "rpm" },
-      { "name": "Refrigerants Supported", "value": "R22, R404A, R507, R134a", "unit": null },
       { "name": "Motor Type", "value": "Hermetic Scroll Motor", "unit": null },
-      { "name": "Motor Protection", "value": "Internal motor protection with thermistors", "unit": null },
-      { "name": "Pressure Protection", "value": "Internal pressure relief valve (model dependent)", "unit": null },
-      { "name": "Lubrication Oil Type", "value": "POE oil (for HFC refrigerants)", "unit": null },
-      { "name": "Oil Hygroscopic Property", "value": "High (moisture sensitive)", "unit": null },
-      { "name": "Noise Level", "value": "Low noise scroll design", "unit": null },
-      { "name": "Bearing Type", "value": "High-efficiency PTFE (Teflon) bearings", "unit": null },
-      { "name": "Starting Method", "value": "Unloaded Start", "unit": null },
-      { "name": "Installation Orientation", "value": "Vertical", "unit": null },
-      { "name": "Electrical Supply", "value": "Single-phase and Three-phase options", "unit": null },
-      { "name": "Maximum Allowable Suction Superheat", "value": 11, "unit": "K" },
-      { "name": "Compliance", "value": "CE", "unit": null }
+      { "name": "Maximum Allowable Suction Superheat", "value": 11, "unit": "K" , "normalized_value": 11, "normalized_unit": "K" }
     ]
-  }
+  },
+  "documentation": "data/all_category_pdf/RefrigerantCompressors 1-40151607.pdf"
   },
 
   {
@@ -335,8 +282,7 @@
         { "name": "Material", "value": "Carbon Steel, Stainless Steel, PVC, CPVC, Ductile Iron", "unit": null },
         { "name": "Connection Type", "value": "Threaded, Welded, Flanged, Socket-weld", "unit": null },
         { "name": "Pressure Rating", "value": "PN 10 – PN 420", "unit": null },
-        { "name": "Operating Temperature", "value": "-50 to 600", "unit": "°C" },
-        { "name": "Standards", "value": "ASTM A106, ASTM A53, ASME B36.10, ASME B16.5", "unit": null }
+        { "name": "Max Operating Temperature", "value": "600", "unit": "°C" }
       ]
     }
   },

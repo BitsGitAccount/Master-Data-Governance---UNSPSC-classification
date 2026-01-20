@@ -1,0 +1,380 @@
+[
+  {
+    "id": "MAT_200001",
+    "material_description": "Compressed Air Filter Model 95",
+    "manufacturer": "FSN Original Spare Parts",
+    "manufacturer_part_number": "MODEL_95",
+    "additional_text": "Compressed air filter for industrial applications with oil separation and particulate filtration, compliant with ISO 8573-1.",
+    "documentation": "data/all_category_pdf/Air filters 1-40161505.pdf",
+    "labels": {
+      "unspsc_final": "40161505",
+      "attributes": [
+        { "name": "Flow Rate", "value": 600, "unit": "m3/h", "normalized_value": 600.0, "normalized_unit": "m3/h" },
+        { "name": "Operating Pressure", "value": 16, "unit": "bar", "normalized_value": 16.0, "normalized_unit": "bar" },
+        { "name": "Operating Temperature", "value": 80, "unit": "°C", "normalized_value": 80.0, "normalized_unit": "°C" },
+        { "name": "Weight", "value": 3.7, "unit": "kg", "normalized_value": 3.7, "normalized_unit": "kg" }
+      ]
+    }
+  },
+  {
+    "id": "MAT_200002",
+    "material_description": "Oil-less riser-mounted air compressor for dry pipe sprinkler systems",
+    "manufacturer": "General Air Products",
+    "manufacturer_part_number": "OL36550AC",
+    "additional_text": "Single-phase oil-less piston air compressor for fire sprinkler systems, UL1450 listed.",
+    "documentation": "data/all_category_pdf/AirCompressors 1-40151601.pdf",
+    "labels": {
+      "unspsc_final": "40151601",
+      "attributes": [
+        { "name": "Operating Pressure", "value": 60, "unit": "psi", "normalized_value": 4.137, "normalized_unit": "bar" },
+        { "name": "Air Flow", "value": 4.43, "unit": "cfm", "normalized_value": 7.524, "normalized_unit": "m3/h" },
+        { "name": "Motor Power", "value": 0.5, "unit": "hp", "normalized_value": 0.373, "normalized_unit": "kW" },
+        { "name": "Supply Voltage", "value": 115, "unit": "V", "normalized_value": 115.0, "normalized_unit": "V" },
+        { "name": "Tank Capacity", "value": 365, "unit": "gallon", "normalized_value": 1381.67, "normalized_unit": "L" }
+      ]
+    }
+  },
+  {
+    "id": "MAT_200003",
+    "material_description": "Stationary electric air compressor with vertical tank",
+    "manufacturer": "Speedaire",
+    "manufacturer_part_number": "4ME97",
+    "additional_text": "Splash-lubricated stationary electric air compressor with 60-gallon vertical tank.",
+    "documentation": "data/all_category_pdf/AirCompressors 2-40151601.pdf",
+    "labels": {
+      "unspsc_final": "40151601",
+      "attributes": [
+        { "name": "Motor Power", "value": 5, "unit": "hp", "normalized_value": 3.728, "normalized_unit": "kW" },
+        { "name": "Air Flow", "value": 14.2, "unit": "cfm", "normalized_value": 24.125, "normalized_unit": "m3/h" },
+        { "name": "Operating Pressure", "value": 135, "unit": "psi", "normalized_value": 9.308, "normalized_unit": "bar" },
+        { "name": "Supply Voltage", "value": 230, "unit": "V", "normalized_value": 230.0, "normalized_unit": "V" },
+        { "name": "Tank Capacity", "value": 60, "unit": "gallon", "normalized_value": 227.12, "normalized_unit": "L" }
+      ]
+    }
+  },
+  {
+    "id": "MAT_200004",
+    "material_description": "Portable manual oil dispenser with double-acting hand pump",
+    "manufacturer": "RAASM S.p.A.",
+    "manufacturer_part_number": "32016",
+    "additional_text": "Portable manual oil dispenser with double-acting pump and 16-liter tank.",
+    "documentation": "data/all_category_pdf/HandPump-40151506.pdf",
+    "labels": {
+      "unspsc_final": "40151506",
+      "attributes": [
+        { "name": "Tank Capacity", "value": 16, "unit": "L", "normalized_value": 16.0, "normalized_unit": "L" },
+        { "name": "Delivery per Cycle", "value": 220, "unit": "g", "normalized_value": 0.22, "normalized_unit": "kg" },
+        { "name": "Maximum Oil Density", "value": 240, "unit": "SAE", "normalized_value": 240.0, "normalized_unit": "SAE" },
+        { "name": "Weight", "value": 10.6, "unit": "kg", "normalized_value": 10.6, "normalized_unit": "kg" }
+      ]
+    }
+  },
+  {
+    "id": "MAT_200005",
+    "material_description": "Self-priming centrifugal irrigation pump",
+    "manufacturer": "Goulds Water Technology",
+    "manufacturer_part_number": "GT15",
+    "additional_text": "Self-priming centrifugal pump for irrigation and water transfer applications.",
+    "documentation": "data/all_category_pdf/IrrigationPump-40151507.pdf",
+    "labels": {
+      "unspsc_final": "40151507",
+      "attributes": [
+        { "name": "Flow Rate", "value": 110, "unit": "gpm", "normalized_value": 24.97, "normalized_unit": "m3/h" },
+        { "name": "Motor Speed", "value": 3500, "unit": "rpm", "normalized_value": 3500.0, "normalized_unit": "rpm" },
+        { "name": "Motor Power", "value": 1.5, "unit": "hp", "normalized_value": 1.119, "normalized_unit": "kW" },
+        { "name": "Operating Temperature", "value": 60, "unit": "°C", "normalized_value": 60.0, "normalized_unit": "°C" }
+      ]
+    }
+  },
+  {
+    "id": "MAT_200006",
+    "material_description": "Centrifugal single-impeller irrigation pump",
+    "manufacturer": "Speroni Water Pumps",
+    "manufacturer_part_number": "309CBM150",
+    "additional_text": "Low-head centrifugal pump for continuous-duty irrigation systems.",
+    "documentation": "data/all_category_pdf/IrrigationPump2-40151507.pdf",
+    "labels": {
+      "unspsc_final": "40151507",
+      "attributes": [
+        { "name": "Motor Speed", "value": 2850, "unit": "rpm", "normalized_value": 2850.0, "normalized_unit": "rpm" },
+        { "name": "Operating Temperature", "value": 90, "unit": "°C", "normalized_value": 90.0, "normalized_unit": "°C" },
+        { "name": "Pump Type", "value": "Centrifugal Single Impeller", "unit": null, "normalized_value": "Centrifugal Single Impeller", "normalized_unit": null },
+        { "name": "Protection Class", "value": "IP44", "unit": null, "normalized_value": "IP44", "normalized_unit": null }
+      ]
+    }
+  },
+  {
+    "id": "MAT_200007",
+    "material_description": "Lube oil filter for compressor protection",
+    "manufacturer": "Donaldson Filtration Deutschland GmbH",
+    "manufacturer_part_number": "P565587",
+    "additional_text": "High-efficiency lube oil filter for compressor protection.",
+    "documentation": "data/all_category_pdf/oilFilter 1-40161504.pdf",
+    "labels": {
+      "unspsc_final": "40161504",
+      "attributes": [
+        { "name": "Flow Rate", "value": 40, "unit": "L/min", "normalized_value": 2.4, "normalized_unit": "m3/h" },
+        { "name": "Operating Pressure", "value": 14, "unit": "bar", "normalized_value": 14.0, "normalized_unit": "bar" },
+        { "name": "Media Type", "value": "High-Efficiency Cellulose", "unit": null, "normalized_value": "High-Efficiency Cellulose", "normalized_unit": null },
+        { "name": "Weight", "value": 0.7, "unit": "kg", "normalized_value": 0.7, "normalized_unit": "kg" }
+      ]
+    }
+  },
+  {
+    "id": "MAT_200008",
+    "material_description": "High-density board-to-board SMT connector Colibri Plug 16+",
+    "manufacturer": "ept GmbH",
+    "manufacturer_part_number": "401-51503-51",
+    "additional_text": "High-speed SMT board-to-board connector for PCIe Gen4 applications.",
+    "documentation": null,
+    "labels": {
+      "unspsc_final": "39121404",
+      "attributes": [
+        { "name": "Operating Voltage", "value": 50, "unit": "VAC", "normalized_value": 50.0, "normalized_unit": "V" },
+        { "name": "Operating Current", "value": 0.5, "unit": "A", "normalized_value": 0.5, "normalized_unit": "A" },
+        { "name": "Data Transfer Rate", "value": 16, "unit": "Gbit/s", "normalized_value": 16.0, "normalized_unit": "Gbit/s" },
+        { "name": "Operating Temperature", "value": 125, "unit": "°C", "normalized_value": 125.0, "normalized_unit": "°C" },
+        { "name": "Number of Contacts", "value": 440, "unit": null, "normalized_value": 440.0, "normalized_unit": null }
+      ]
+    }
+  },
+  {
+    "id": "AIR_STERILIZER_001",
+    "material_description": "Air sterilizer with UV-C and HEPA filtration",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Air sterilization system with UV-C light and HEPA filtration technology.",
+    "documentation": "data/all_category_pdf/Air_Sterilizer-40161608.pdf",
+    "labels": {
+      "unspsc_final": "40161608",
+      "attributes": [
+        { "name": "Airflow Capacity", "value": 380, "unit": "m3/h", "normalized_value": 380.0, "normalized_unit": "m3/h" },
+        { "name": "Power Consumption", "value": 380, "unit": "W", "normalized_value": 0.38, "normalized_unit": "kW" },
+        { "name": "Supply Voltage", "value": 240, "unit": "V", "normalized_value": 240.0, "normalized_unit": "V" },
+        { "name": "Operating Temperature", "value": 35, "unit": "°C", "normalized_value": 35.0, "normalized_unit": "°C" }
+      ]
+    }
+  },
+  {
+    "id": "AIR_CLEANSER_HEPA550_001",
+    "material_description": "AlorAir CleanShield HEPA 550 air scrubber",
+    "manufacturer": "AlorAir Solutions, Inc.",
+    "manufacturer_part_number": "CleanShield HEPA 550",
+    "additional_text": "Portable HEPA air scrubber with 3-stage filtration.",
+    "documentation": "data/all_category_pdf/AirCleanser-40161602.pdf",
+    "labels": {
+      "unspsc_final": "40161602",
+      "attributes": [
+        { "name": "Airflow", "value": 750, "unit": "cfm", "normalized_value": 1274.25, "normalized_unit": "m3/h" },
+        { "name": "Filtration Efficiency", "value": 99.97, "unit": "%", "normalized_value": 99.97, "normalized_unit": "%" },
+        { "name": "Supply Voltage", "value": 115, "unit": "V", "normalized_value": 115.0, "normalized_unit": "V" },
+        { "name": "Sound Level", "value": 65, "unit": "dBA", "normalized_value": 65.0, "normalized_unit": "dBA" },
+        { "name": "Weight", "value": 39.6, "unit": "lb", "normalized_value": 17.96, "normalized_unit": "kg" }
+      ]
+    }
+  },
+  {
+    "id": "FILTER_MEDIA_001",
+    "material_description": "Generic filter media for air, water, oil, and process filtration",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Multi-purpose filter media for various industrial filtration applications.",
+    "documentation": "data/all_category_pdf/Filter_Media-40161800.pdf",
+    "labels": {
+      "unspsc_final": "40161800",
+      "attributes": [
+        { "name": "Filtration Rating", "value": 100, "unit": "micron", "normalized_value": 100.0, "normalized_unit": "micron" },
+        { "name": "Operating Temperature", "value": 80, "unit": "°C", "normalized_value": 80.0, "normalized_unit": "°C" },
+        { "name": "Media Type", "value": "Activated Carbon, Membrane, Fiber", "unit": null, "normalized_value": "Activated Carbon, Membrane, Fiber", "normalized_unit": null },
+        { "name": "Form Factor", "value": "Cartridge, Sheet, Roll", "unit": null, "normalized_value": "Cartridge, Sheet, Roll", "normalized_unit": null }
+      ]
+    }
+  },
+  {
+    "id": "WATER_PURIFICATION_SYSTEM_001",
+    "material_description": "Water purification system using RO and UV technology",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Advanced water purification system with reverse osmosis and UV sterilization.",
+    "documentation": "data/all_category_pdf/Water_Purification_System-40161609.pdf",
+    "labels": {
+      "unspsc_final": "40161609",
+      "attributes": [
+        { "name": "Flow Rate", "value": 5000, "unit": "L/h", "normalized_value": 5.0, "normalized_unit": "m3/h" },
+        { "name": "Operating Pressure", "value": 6, "unit": "bar", "normalized_value": 6.0, "normalized_unit": "bar" },
+        { "name": "TDS Reduction", "value": 95, "unit": "%", "normalized_value": 95.0, "normalized_unit": "%" },
+        { "name": "Operating Temperature", "value": 45, "unit": "°C", "normalized_value": 45.0, "normalized_unit": "°C" }
+      ]
+    }
+  },
+  {
+    "id": "MAT_200009",
+    "material_description": "Horizontal close-coupled centrifugal pump Etabloc 050-032-160 GG",
+    "manufacturer": "KSB",
+    "manufacturer_part_number": "ETB 050-032-160-GGSBV11 WS2CD2HHB",
+    "additional_text": "Single-stage close-coupled centrifugal pump for clean water applications.",
+    "documentation": "data/all_category_pdf/PumpPart and Accessories 1-40151700.pdf",
+    "labels": {
+      "unspsc_final": "40151700",
+      "attributes": [
+        { "name": "Flow Rate", "value": 25.55, "unit": "m3/h", "normalized_value": 25.55, "normalized_unit": "m3/h" },
+        { "name": "Pump Head", "value": 24.52, "unit": "m", "normalized_value": 24520.0, "normalized_unit": "mm" },
+        { "name": "Motor Power", "value": 3, "unit": "kW", "normalized_value": 3.0, "normalized_unit": "kW" },
+        { "name": "Motor Speed", "value": 2900, "unit": "rpm", "normalized_value": 2900.0, "normalized_unit": "rpm" }
+      ]
+    }
+  },
+  {
+    "id": "MAT_200010",
+    "material_description": "Refrigeration scroll compressor ZB Series for medium and high temperature applications",
+    "manufacturer": "Emerson Climate Technologies",
+    "manufacturer_part_number": "ZB Series",
+    "additional_text": "Copeland ZB Series scroll compressors for refrigeration with high energy efficiency and low noise.",
+    "documentation": "data/all_category_pdf/RefrigerantCompressors 1-40151607.pdf",
+    "labels": {
+      "unspsc_final": "40151607",
+      "attributes": [
+        { "name": "Motor Power", "value": 15, "unit": "HP", "normalized_value": 11.186, "normalized_unit": "kW" },
+        { "name": "Operating Frequency", "value": 60, "unit": "Hz", "normalized_value": 60.0, "normalized_unit": "Hz" },
+        { "name": "Motor Speed", "value": 3500, "unit": "rpm", "normalized_value": 3500.0, "normalized_unit": "rpm" },
+        { "name": "Motor Type", "value": "Hermetic Scroll Motor", "unit": null, "normalized_value": "Hermetic Scroll Motor", "normalized_unit": null }
+      ]
+    }
+  },
+  {
+    "id": "UNSPSC_40170000",
+    "material_description": "Pipes, piping systems, and pipe fittings for conveying fluids and gases",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Industrial pipes and fittings for fluid transport systems.",
+    "documentation": null,
+    "labels": {
+      "unspsc_final": "40170000",
+      "attributes": [
+        { "name": "Pipe Size", "value": 48, "unit": "inch", "normalized_value": 1219.2, "normalized_unit": "mm" },
+        { "name": "Pressure Rating", "value": "PN 10-420", "unit": null, "normalized_value": "PN 10-420", "normalized_unit": null },
+        { "name": "Operating Temperature", "value": 600, "unit": "°C", "normalized_value": 600.0, "normalized_unit": "°C" },
+        { "name": "Material", "value": "Carbon Steel, Stainless Steel, PVC", "unit": null, "normalized_value": "Carbon Steel, Stainless Steel, PVC", "normalized_unit": null }
+      ]
+    }
+  },
+  {
+    "id": "UNSPSC_40171600",
+    "material_description": "Heavy-duty industrial piping systems for high-pressure services",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Industrial piping for oil & gas, chemical processing, and power plants.",
+    "documentation": null,
+    "labels": {
+      "unspsc_final": "40171600",
+      "attributes": [
+        { "name": "Pipe Size", "value": 48, "unit": "inch", "normalized_value": 1219.2, "normalized_unit": "mm" },
+        { "name": "Operating Pressure", "value": 2500, "unit": "psi", "normalized_value": 172.369, "normalized_unit": "bar" },
+        { "name": "Material Grade", "value": "ASTM A106 Gr.B", "unit": null, "normalized_value": "ASTM A106 Gr.B", "normalized_unit": null },
+        { "name": "Yield Strength", "value": 240, "unit": "MPa", "normalized_value": 240.0, "normalized_unit": "MPa" }
+      ]
+    }
+  },
+  {
+    "id": "UNSPSC_40174700",
+    "material_description": "Threaded pipe flanges for non-welded connections",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Female-threaded flanges for low to medium pressure applications.",
+    "documentation": null,
+    "labels": {
+      "unspsc_final": "40174700",
+      "attributes": [
+        { "name": "Nominal Size", "value": 24, "unit": "inch", "normalized_value": 609.6, "normalized_unit": "mm" },
+        { "name": "Pressure Class", "value": "ANSI 150-600", "unit": null, "normalized_value": "ANSI 150-600", "normalized_unit": null },
+        { "name": "Thread Type", "value": "NPT", "unit": null, "normalized_value": "NPT", "normalized_unit": null },
+        { "name": "Material", "value": "ASTM A105, ASTM A182 F316", "unit": null, "normalized_value": "ASTM A105, ASTM A182 F316", "normalized_unit": null }
+      ]
+    }
+  },
+  {
+    "id": "UNSPSC_40174712",
+    "material_description": "Manual or powered pipe threading tool kits",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Threading tools for cutting NPT pipe threads.",
+    "documentation": null,
+    "labels": {
+      "unspsc_final": "40174712",
+      "attributes": [
+        { "name": "Thread Size Range", "value": 4, "unit": "inch", "normalized_value": 101.6, "normalized_unit": "mm" },
+        { "name": "Thread Standard", "value": "NPT", "unit": null, "normalized_value": "NPT", "normalized_unit": null },
+        { "name": "Drive Type", "value": "Manual, Electric", "unit": null, "normalized_value": "Manual, Electric", "normalized_unit": null },
+        { "name": "Motor Power", "value": 1.5, "unit": "hp", "normalized_value": 1.119, "normalized_unit": "kW" }
+      ]
+    }
+  },
+  {
+    "id": "UNSPSC_40180000",
+    "material_description": "Metal and plastic tubing for fluid and gas transfer",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Tubing for instrumentation, refrigeration, hydraulics, and pneumatics.",
+    "documentation": null,
+    "labels": {
+      "unspsc_final": "40180000",
+      "attributes": [
+        { "name": "Tube Diameter", "value": 2, "unit": "inch", "normalized_value": 50.8, "normalized_unit": "mm" },
+        { "name": "Pressure Rating", "value": 6000, "unit": "psi", "normalized_value": 413.685, "normalized_unit": "bar" },
+        { "name": "Temperature Range", "value": 260, "unit": "°C", "normalized_value": 260.0, "normalized_unit": "°C" },
+        { "name": "Material", "value": "Copper, Stainless Steel, PVC", "unit": null, "normalized_value": "Copper, Stainless Steel, PVC", "normalized_unit": null }
+      ]
+    }
+  },
+  {
+    "id": "UNSPSC_40181800",
+    "material_description": "Welded carbon steel structural tubing",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Structural tubing for construction and machinery frames.",
+    "documentation": null,
+    "labels": {
+      "unspsc_final": "40181800",
+      "attributes": [
+        { "name": "Tube Dimension", "value": 28, "unit": "inch", "normalized_value": 711.2, "normalized_unit": "mm" },
+        { "name": "Wall Thickness", "value": 25, "unit": "mm", "normalized_value": 25.0, "normalized_unit": "mm" },
+        { "name": "Material Standard", "value": "ASTM A500 Gr.B", "unit": null, "normalized_value": "ASTM A500 Gr.B", "normalized_unit": null },
+        { "name": "Yield Strength", "value": 345, "unit": "MPa", "normalized_value": 345.0, "normalized_unit": "MPa" }
+      ]
+    }
+  },
+  {
+    "id": "UNSPSC_40183000",
+    "material_description": "Flexible rubber and plastic tubing",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Flexible tubing for air, water, fuel, and laboratory applications.",
+    "documentation": null,
+    "labels": {
+      "unspsc_final": "40183000",
+      "attributes": [
+        { "name": "Inner Diameter", "value": 2, "unit": "inch", "normalized_value": 50.8, "normalized_unit": "mm" },
+        { "name": "Pressure Rating", "value": 1000, "unit": "psi", "normalized_value": 68.948, "normalized_unit": "bar" },
+        { "name": "Temperature Range", "value": 260, "unit": "°C", "normalized_value": 260.0, "normalized_unit": "°C" },
+        { "name": "Material", "value": "PVC, Polyurethane, Silicone", "unit": null, "normalized_value": "PVC, Polyurethane, Silicone", "normalized_unit": null }
+      ]
+    }
+  },
+  {
+    "id": "UNSPSC_40183001",
+    "material_description": "Flexible elastomeric rubber tubing",
+    "manufacturer": null,
+    "manufacturer_part_number": null,
+    "additional_text": "Rubber tubing for air, water, fuel, and industrial fluid transfer.",
+    "documentation": null,
+    "labels": {
+      "unspsc_final": "40183001",
+      "attributes": [
+        { "name": "Inner Diameter", "value": 2, "unit": "inch", "normalized_value": 50.8, "normalized_unit": "mm" },
+        { "name": "Maximum Pressure", "value": 300, "unit": "psi", "normalized_value": 20.684, "normalized_unit": "bar" },
+        { "name": "Temperature Range", "value": 100, "unit": "°C", "normalized_value": 100.0, "normalized_unit": "°C" },
+        { "name": "Material Type", "value": "Nitrile (NBR), EPDM", "unit": null, "normalized_value": "Nitrile (NBR), EPDM", "normalized_unit": null }
+      ]
+    }
+  }
+]
